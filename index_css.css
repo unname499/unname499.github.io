@@ -1,0 +1,23 @@
+.header {
+    text-align: center;
+    color: rgb(200, 225, 100);
+    border: 10px groove rgb(199, 201, 50);
+}
+
+body {
+    background-color: rgb(114, 145, 191);
+}
+
+.who {}
+
+h2 {
+    margin-left: 5em;
+    color: white;
+}
+
+img {
+    margin-left: 50em;
+    width: 4em;
+    height: 4em;
+    position: absolute;
+}
