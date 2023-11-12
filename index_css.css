@@ -1,0 +1,55 @@
+.header {
+    text-align: center;
+    color: rgb(200, 225, 100);
+    border: 10px groove rgb(199, 201, 50);
+}
+
+body {
+    background-color: rgb(114, 145, 191);
+}
+
+#body {
+    margin-left: 5em;
+    color: white;
+}
+
+#a {
+    margin-left: 30em;
+    width: 4em;
+    height: 4em;
+    position: absolute;
+}
+
+#start {
+    margin-top: 2em;
+}
+
+#s {
+    margin-left: 10em;
+}
+
+#body2 button {
+    border: 2px solid black;
+    /* margin-top: 1em; */
+    /* margin-right: 4em; */
+    background-color: rgb(26, 97, 196);
+    height: 60px;
+    width: 80px;
+    margin: 10px auto;
+}
+
+a {
+    text-decoration: none;
+    color: red;
+    font-size: 1.2em;
+}
+
+a:hover {
+    color: saddlebrown;
+}
+
+.tpwil {
+    text-align: center;
+    color: rgb(200, 225, 100);
+    border: 10px groove rgb(199, 201, 50);
+}
