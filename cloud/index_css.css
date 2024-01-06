@@ -1,0 +1,30 @@
+div {
+    border: 5px solid black;
+    overflow: overlay;
+    height: 10em;
+    width: 800px;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+a:hover {
+    color: yellow;
+}
+
+body {
+    background-color: rgb(114, 145, 191);
+}
+
+div ul li {
+    color: white;
+}
+
+.no_style {
+    border: none;
+    overflow: visible;
+    height: auto;
+    width: auto;
+}
