@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index_css.css">
+    <title>CPS点击测试</title>
+    <script src="index_js.js"></script>
+</head>
+<body>
+    <button onclick="start();" id="start">开始吧！</button>
+    <button onclick="reset();" id="reset">重置</button>
+    <p id="cps"></p>
+    <p id="check"></p>
+    <label for="seconds">秒数：</label>
+    <select onclick="ifs();" id="se">
+        <option value="1sc" id="1sc">1秒</option>
+        <option value="5sc" id="5sc">5秒</option>
+        <option value="10sc" id="10sc">10秒</option>
+        <option value="60sc" id="60sc">60秒</option>
+        <option value="100sc" id="100sc">100秒</option>
+    </select>
+    <br>
+    <hr>
+    <br>
+    <button id="dark" onclick="darktheme();">黑暗主题</button>
+    <button id="light" onclick="lighttheme();">浅色主题</button>
+</body>
+</html>
