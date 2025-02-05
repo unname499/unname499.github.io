@@ -1,69 +1,122 @@
-.header,
-.tpwil,
-.gn {
+.cd ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #f3f3f3;
+}
+
+.cd ul li {
+    float: left;
+}
+
+.cd ul li a {
+    display: block;
+    color: #666;
     text-align: center;
-    color: rgb(200, 225, 100);
-    border: 10px groove rgb(199, 201, 50);
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.cd ul li a:hover:not(.active) {
+    background-color: #ddd;
+}
+
+.cd ul li a.active {
+    color: white;
+    background-color: #116adf;
 }
 
 body {
-    background-color: rgb(114, 145, 191);
+    margin: 0px;
+    background-color: #1E1E1E;
 }
 
-#body {
-    margin-left: 5em;
-    color: white;
+.zhuyetu {
+    user-select: none;
+    object-fit: cover;
+    position: relative;
+    width: 100%;
+    height: 8%;
 }
 
-#a {
-    margin-left: 30em;
-    width: 4em;
-    height: 4em;
+.xuanf {
+    user-select: none;
     position: absolute;
+    top: 30%;
+    left: 35%;
+    color: #ffff00;
 }
 
-#start {
-    margin-top: 2em;
+.xuanf2 {
+    user-select: none;
+    position: absolute;
+    top: 48%;
+    left: 43%;
+    color: grey;
 }
 
-#s {
-    margin-left: 10em;
+.cd {
+    user-select: none;
+    opacity: 0.7;
+    background-color: #0062CC;
+    overflow: hidden;
+    z-index: 9999;
+    position: fixed;
+    width: 100%;
+    height: auto;
+    right: 0px;
+    top: 0px;
+    text-align: center;
 }
 
-#body2 button,
-.body3 button {
-    border: 2px solid black;
-    /* margin-top: 1em; */
-    /* margin-right: 4em; */
-    background-color: rgb(26, 97, 196);
-    height: 60px;
-    width: 80px;
-    margin: 10px auto;
+.menu img {
+    float: left;
+    margin-right: 10px;
+}
+
+.menu {
+    width: auto;
+    line-height: 20px;
+    overflow: hidden;
+}
+
+.menu button {
+    width: 100%;
+    background: #2E2E2E;
+    border: 2px solid #3F3F3F;
+    transition-duration: 0.4s;
+    border-radius: 10px;
 }
 
 a {
+    color: #CCCCCC;
     text-decoration: none;
-    color: red;
-    font-size: 1.2em;
 }
 
-a:hover {
-    color: saddlebrown;
+.menu button {
+    cursor: pointer;
 }
 
-.foot {
-    background-color: brown;
-    color: #fff;
+.menu button:hover {
+    background: #4E4E4E;
+}
+
+.menu button span,
+.menu button strong {
     display: flex;
-    height: 200px;
+    margin-top: 6px;
+    margin-bottom: 12px;
+    color: #CCCCCC;
 }
 
-.img1 {
-    background-color: #fff;
-    margin-left: calc(50% - 300px);
-    margin-right: calc(50% - 300px);
+.title {
+    text-align: center;
+    color: #DDDD00;
 }
 
-.f {
-    margin-left: 50px;
+.foot p {
+    color: gray;
+    font-size: 10px;
+    text-align: center;
 }
