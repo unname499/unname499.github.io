@@ -1,0 +1,30 @@
+button {
+    width: 100%;
+    background: #2E2E2E;
+    border: 2px solid #3F3F3F;
+    transition-duration: 0.4s;
+    /* border-radius: 10px; */
+    cursor: pointer;
+    padding: 15px;
+    color: #CCCCCC;
+    display: flex;
+}
+
+a {
+    color: #CCCCCC;
+    text-decoration: none;
+}
+
+button:hover {
+    background: #4E4E4E;
+}
+
+body {
+    margin: 0px;
+    background-color: #1E1E1E;
+}
+
+#dwn h1 {
+    text-align: center;
+    color: #DDDD00;
+}
