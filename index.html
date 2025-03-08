@@ -7,30 +7,74 @@
     <title>我的网站</title>
     <link rel="stylesheet" href="index_css.css">
     <link rel="shortcut icon" href="icon.ico" type="image/x-icon">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
     <script>
-        function about() {
-            alert(`关于：
-Unknown_name的个人网站
-原地址：unknown-name-lang.github.io
+        window.onload = function() {
+            var asd = document.getElementById("cd")
 
-当前主页版本：Ver 1.0.1
+            function PopupAlert() {
+                gsap.fromTo(".alert_content", {
+                    scale: 0.2
+                }, {
+                    scale: 1,
+                    transformOrigin: "center center",
+                    duration: 0.2,
+                });
+                gsap.fromTo(".overlay", {
+                    opacity: 0,
+                }, {
+                    opacity: 1,
+                    duration: 0.2,
+                    transformOrigin: "center center",
+                });
+                var overlay = document.getElementById('overlay');
+                overlay.classList.toggle('active');
 
-更新内容：
-1.更新了功能“站长自用软件”
-`)
+                var popup_alert = document.getElementById('alert');
+                popup_alert.classList.toggle('active');
+
+                asd.style.position = "static";
+            }
+
+            function closePopup() {
+                asd.style.position = "fixed";
+                gsap.fromTo(".alert_content", {
+                    scale: 1
+                }, {
+                    scale: 0.01,
+                    duration: 0.2,
+                    transformOrigin: "center center",
+                    onComplete: end
+                });
+                gsap.fromTo(".overlay", {
+                    opacity: 1,
+                }, {
+                    opacity: 0,
+                    duration: 0.2,
+                    transformOrigin: "center center",
+                });
+            }
+
+            function end() {
+                popup_alert = document.getElementById('alert');
+                overlay = document.getElementById('overlay');
+                popup_alert.className = "alert";
+                overlay.className = "overlay";
+            }
+            document.getElementById("close").onclick = closePopup
+            document.getElementById("about").onclick = PopupAlert
         }
     </script>
 </head>
 
 <body>
-    <div class="cd">
+    <div class="cd" id="cd">
         <ul>
-            <li><a href="" class="active">主页</a></li>
+            <li><a class="active" href="https://space.bilibili.com/3494366895147903" target="_blank">Bilibili</a></li>
             <li><a href="/blog">博客</a></li>
             <li><a href="/cloud">云盘</a></li>
-            <li><a href="https://space.bilibili.com/3494366895147903">Bilibili</a></li>
-            <li><a href="https://github.com/unname-ui">Github</a></li>
-            <li><a href="javascript:about();">关于</a></li>
+            <li><a href="https://github.com/unknown-name-lang" target="_blank">Github</a></li>
+            <li><a href="javascript:void(0);" id="about">关于</a></li>
         </ul>
     </div>
     <div class="center">
@@ -58,7 +102,7 @@ Unknown_name的个人网站
             <button class="cpsTest">
                 <img src="mouse.png" alt="">
                 <strong>CPS测试</strong>
-                <span>点击速度测试，不知道CPS是什么的请自己搜索</span>
+                <span>点击速度测试&nbsp;&nbsp;&nbsp;&nbsp;<span class="line-through">（就是做着玩的）</span> </span>
             </button>
         </a>
         <a href="./programs/index.html">
@@ -68,11 +112,36 @@ Unknown_name的个人网站
                 <span>站长自用联机、启动器、开服器等软件</span>
             </button>
         </a>
+        <aside id="alert" class="alert">
+            <div class="alert_content" id="alert_content">
+                <div class="lan">
+                    <span>关于：</span>
+                </div>
+                <div class="about">
+                    <img src="whoisun.jpg" alt="" width="64" height="64">
+                    <div class="center">
+                        <h4>Unknown_name的个人网站</h4>
+                        <p>原网址为：unknown-name-lang.github.io</p>
+                        <p>整个页面都是自己做的，没用模板&ensp;&ensp;&ensp;&ensp;&ensp;<span class="line-through-all">（有一些是抄的）</span></p>
+                    </div>
+                    <br>
+                    <hr>
+                    <div class="center">
+                        <p>当前主页版本：Ver 1.2</p>
+                        <p>更新时间：2025/03/06 21:30</p>
+                    </div>
+                    <h3>更新内容：</h3>
+                    <p>1. 将关于弹窗换为网页内部弹窗，更美观</p>
+                </div>
+                <button id="close" class="close">关闭</button>
+            </div>
+        </aside>
+        <div id="overlay" class="overlay"></div>
     </div>
     <div class="foot">
         <br>
         <br>
-        <p>Unknown_name's blog&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Copyright by Bilibili Unknown_name</p>
+        <p>Unknown_name's blog&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;Copyright by Bilibili Unknown_name</p>
         <p>我不知道备没备案</p>
     </div>
 </body>
