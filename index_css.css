@@ -3,7 +3,7 @@
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #3f3f3f;
+    background-color: rgb(16, 16, 20);
 }
 
 .cd ul li {
@@ -27,17 +27,22 @@
     background-color: #116adf;
 }
 
+.cd ul li a.active:hover {
+    color: #eee;
+    background-color: #0b3adf;
+}
+
 body {
     margin: 0px;
     background-color: #1E1E1E;
 }
 
 .zhuyetu {
-    user-select: none;
     object-fit: cover;
     position: relative;
     width: 100%;
     height: 8%;
+    -webkit-user-drag: none;
 }
 
 .xuanf {
@@ -70,7 +75,7 @@ body {
     text-align: center;
 }
 
-.menu img {
+.menu img:not(.close, .about img) {
     float: left;
     margin-right: 10px;
 }
@@ -81,28 +86,26 @@ body {
     overflow: hidden;
 }
 
-.menu button {
+.menu button:not(.close) {
     width: 100%;
     background: #2E2E2E;
     border: 2px solid #3F3F3F;
     transition-duration: 0.4s;
     border-radius: 10px;
+    cursor: pointer;
 }
 
 a {
     color: #CCCCCC;
     text-decoration: none;
+    transition-duration: 0.3s;
 }
 
-.menu button {
-    cursor: pointer;
-}
-
-.menu button:hover {
+.menu button:hover:not(.close) {
     background: #4E4E4E;
 }
 
-.menu button span,
+.menu button span:not(.line-through),
 .menu button strong {
     display: flex;
     margin-top: 6px;
@@ -118,5 +121,101 @@ a {
 .foot p {
     color: gray;
     font-size: 10px;
+    text-align: center;
+}
+
+.line-through {
+    text-decoration: line-through;
+    display: flex;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    color: #CCCCCC;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+}
+
+.overlay.active {
+    display: block;
+    z-index: 90;
+}
+
+.alert {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    border-radius: 10px;
+}
+
+.alert.active {
+    display: flex;
+    left: 0;
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+}
+
+.alert_content {
+    width: 500px;
+    height: 550px;
+    background-color: rgb(16, 16, 20);
+    border-radius: 10px;
+}
+
+.lan {
+    display: block;
+    width: auto;
+    padding: 10px 0 10px 0;
+    border-radius: 10px 10px 0 0;
+    background: rgb(24, 24, 28);
+    text-align: center;
+    color: #63e2b7;
+}
+
+.close {
+    background: #2E2E2E;
+    border: 2px solid #3F3F3F;
+    transition-duration: 0.4s;
+    border-radius: 5px;
+    color: #eee;
+    font-size: 1.2em;
+    height: 2em;
+    width: 30%;
+    display: block;
+    margin: 0 auto;
+}
+
+.close:hover {
+    background: #4E4E4E;
+}
+
+.about {
+    height: 83%;
+    overflow: auto;
+    color: #eee;
+}
+
+.about img {
+    display: block;
+    margin: 0 auto;
+}
+
+.line-through-all {
+    text-decoration: line-through;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    color: #CCCCCC;
+}
+
+.center {
     text-align: center;
 }
