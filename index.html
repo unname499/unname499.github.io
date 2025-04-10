@@ -63,6 +63,18 @@
             }
             document.getElementById("close").onclick = closePopup
             document.getElementById("about").onclick = PopupAlert
+            gsap.fromTo(".zhuyetu", {
+                filter: "grayscale(100%)",
+            }, {
+                filter: "grayscale(0%)",
+                duration: 0.3,
+            });
+            gsap.fromTo(".center", {
+                opacity: 0
+            }, {
+                opacity: 1,
+                duration: 0.3,
+            });
         }
     </script>
 </head>
@@ -71,38 +83,40 @@
     <div class="cd" id="cd">
         <ul>
             <li><a class="active" href="https://space.bilibili.com/3494366895147903" target="_blank">Bilibili</a></li>
-            <li><a href="/blog">博客</a></li>
-            <li><a href="/cloud">云盘</a></li>
+            <li><a href="./blog/index.html">博客</a></li>
+            <li><a href="./cloud/index.html">云盘</a></li>
             <li><a href="https://github.com/unknown-name-lang" target="_blank">Github</a></li>
             <li><a href="javascript:void(0);" id="about">关于</a></li>
         </ul>
     </div>
     <div class="center">
-        <img class="zhuyetu" src="zhuyetu.jpg" alt="主页图没了？请检查您的网络后重试，如果还不行加QQ 1300443974">
-        <h1 class="xuanf">Unknown_name的个人网站</h1>
-        <h6 class="xuanf2">------- FOR EVERYYONE -------</h6>
+        <img class="zhuyetu" src="zhuyetu.jpg">
+        <div class="titles">
+            <h1 class="xuanf">Unknown_name 's Blog</h1>
+        </div>
+
     </div>
     <h1 class="title">网站功能展示</h1>
     <div class="menu">
-        <a href="/blog">
+        <a href="./blog/index.html">
             <button class="blog">
                 <img src="blog.png" alt="">
                 <strong>文章</strong>
                 <span>这里面有站长发布的文章</span>
             </button>
         </a>
-        <a href="/cloud">
+        <a href="./cloud/index.html">
             <button class="cloud">
                 <img src="cloud.png" alt="">
                 <strong>云盘</strong>
                 <span>存东西的</span>
             </button>
         </a>
-        <a href="/cps_test">
+        <a href="./cps_test/index.html">
             <button class="cpsTest">
                 <img src="mouse.png" alt="">
                 <strong>CPS测试</strong>
-                <span>点击速度测试&nbsp;&nbsp;&nbsp;&nbsp;<span class="line-through">（就是做着玩的）</span> </span>
+                <span>点击速度测试&ensp;&ensp;<span class="line-through">（就是做着玩的）</span> </span>
             </button>
         </a>
         <a href="./programs/index.html">
@@ -112,32 +126,35 @@
                 <span>站长自用联机、启动器、开服器等软件</span>
             </button>
         </a>
-        <aside id="alert" class="alert">
-            <div class="alert_content" id="alert_content">
-                <div class="lan">
-                    <span>关于：</span>
-                </div>
-                <div class="about">
-                    <img src="whoisun.jpg" alt="" width="64" height="64">
-                    <div class="center">
-                        <h4>Unknown_name的个人网站</h4>
-                        <p>原网址为：unknown-name-lang.github.io</p>
-                        <p>整个页面都是自己做的，没用模板&ensp;&ensp;&ensp;&ensp;&ensp;<span class="line-through-all">（有一些是抄的）</span></p>
-                    </div>
-                    <br>
-                    <hr>
-                    <div class="center">
-                        <p>当前主页版本：Ver 1.2</p>
-                        <p>更新时间：2025/03/06 21:30</p>
-                    </div>
-                    <h3>更新内容：</h3>
-                    <p>1. 将关于弹窗换为网页内部弹窗，更美观</p>
-                </div>
-                <button id="close" class="close">关闭</button>
-            </div>
-        </aside>
-        <div id="overlay" class="overlay"></div>
     </div>
+    <aside id="alert" class="alert">
+        <div class="alert_content" id="alert_content">
+            <div class="lan">
+                <span>关于：</span>
+            </div>
+            <div class="about">
+                <img src="whoisun.jpg" alt="" width="64" height="64">
+                <div class="center">
+                    <h4>Unknown_name的个人网站</h4>
+                    <p>原网址为：unknown-name-lang.github.io</p>
+                    <p>本页面由我 & DeepSeek & CSDN的各位大佬们的文章共同开发</p>
+                </div>
+                <br>
+                <hr>
+                <div class="center">
+                    <p>当前主页版本：Ver 1.4</p>
+                    <p>更新时间：2025/04/10 22:00</p>
+                </div>
+                <h3>更新内容：</h3>
+                <p>1. 主页大更改</p>
+                <hr>
+                <h3>更新预告：</h3>
+                <p>将所有子功能UI全部大改，预计在2025年6月完成</p>
+            </div>
+            <button id="close" class="close">关闭</button>
+        </div>
+    </aside>
+    <div id="overlay" class="overlay"></div>
     <div class="foot">
         <br>
         <br>
