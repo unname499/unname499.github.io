@@ -63,12 +63,6 @@
             }
             document.getElementById("close").onclick = closePopup
             document.getElementById("about").onclick = PopupAlert
-            gsap.fromTo(".zhuyetu", {
-                filter: "grayscale(100%)",
-            }, {
-                filter: "grayscale(0%)",
-                duration: 0.3,
-            });
             gsap.fromTo(".center", {
                 opacity: 0
             }, {
@@ -90,19 +84,21 @@
         </ul>
     </div>
     <div class="center">
-        <img class="zhuyetu" src="zhuyetu.jpg">
+        <img class="zhuyetu" src="https://bing.img.run/rand.php">
         <div class="titles">
-            <h1 class="xuanf">Unknown_name 's Blog</h1>
+            <h1 class="xuanf">Unknown_name's Blog</h1>
+            <h3 class="xuanf2">--- 科技不再是高高在上，科技必须服务于每一个人 ---</h3>
         </div>
 
     </div>
     <h1 class="title">网站功能展示</h1>
     <div class="menu">
+        <!-- style="display: grid; grid-template-columns: auto auto; list-style-type: none; padding: 0;"> -->
         <a href="./blog/index.html">
             <button class="blog">
                 <img src="blog.png" alt="">
                 <strong>文章</strong>
-                <span>这里面有站长发布的文章</span>
+                <span>这还要我解释？</span>
             </button>
         </a>
         <a href="./cloud/index.html">
@@ -114,9 +110,9 @@
         </a>
         <a href="./cps_test/index.html">
             <button class="cpsTest">
-                <img src="mouse.png" alt="">
+                <img src="mouse.png " alt="">
                 <strong>CPS测试</strong>
-                <span>点击速度测试&ensp;&ensp;<span class="line-through">（就是做着玩的）</span> </span>
+                <span>点击速度测试&ensp;&ensp;<span class="line-through ">（就是做着玩的）</span> </span>
             </button>
         </a>
         <a href="./programs/index.html">
@@ -133,7 +129,7 @@
                 <span>关于：</span>
             </div>
             <div class="about">
-                <img src="whoisun.jpg" alt="" width="64" height="64">
+                <img src="whoisun.jpg " alt=" " width="64 " height="64 ">
                 <div class="center">
                     <h4>Unknown_name的个人网站</h4>
                     <p>原网址为：unknown-name-lang.github.io</p>
@@ -141,15 +137,19 @@
                 </div>
                 <br>
                 <hr>
-                <div class="center">
-                    <p>当前主页版本：Ver 1.4</p>
-                    <p>更新时间：2025/04/10 22:00</p>
+                <div class="center ">
+                    <p>当前主页版本：Ver 1.4.1</p>
+                    <p>更新时间：2025/04/12 22:00</p>
                 </div>
                 <h3>更新内容：</h3>
-                <p>1. 主页大更改</p>
+                <p>1. 主页继续大更改</p>
                 <hr>
                 <h3>更新预告：</h3>
                 <p>将所有子功能UI全部大改，预计在2025年6月完成</p>
+                <hr>
+                <h3>引用的其他资源：</h3>
+                <p>GSAP动画库：https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js</p>
+                <p>Microsoft Bing随机主页图片：https://bing.img.run/rand.php</p>
             </div>
             <button id="close" class="close">关闭</button>
         </div>
