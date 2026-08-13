@@ -1,0 +1,756 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fa.jpg">
+  <link rel="icon" href="/img/fa.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="观前提示：本人并不是这方面的大佬，这些代码是我和 DeepSeek 一起写出来的，所以代码烂是正常的。另外，我用的是 PlatformIO，所以本教程对于 Arduino IDE 有些方法可能不适用。                          完整源码在下方「完整demo」章节，建议先看完讲解再复制使用。              准备工作 ESP32开发板一块">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何在ESP32 Arduino框架下解压和风天气的GZIP数据">
+<meta property="og:url" content="http://example.com/2026/08/13/ESP32_ARDUINO_GZIP/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="观前提示：本人并不是这方面的大佬，这些代码是我和 DeepSeek 一起写出来的，所以代码烂是正常的。另外，我用的是 PlatformIO，所以本教程对于 Arduino IDE 有些方法可能不适用。                          完整源码在下方「完整demo」章节，建议先看完讲解再复制使用。              准备工作 ESP32开发板一块">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-08-13T06:09:26.000Z">
+<meta property="article:modified_time" content="2026-08-13T07:15:49.493Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Arduino">
+<meta property="article:tag" content="ESP32">
+<meta property="article:tag" content="GZIP">
+<meta property="article:tag" content="和风天气">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>如何在ESP32 Arduino框架下解压和风天气的GZIP数据 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/iconfont.css">
+<link rel="stylesheet" href="/css/githubicon.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.9","typing":{"enable":true,"typeSpeed":40,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"language":"zh-CN"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Unname&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>主页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://space.bilibili.com/3494366895147903" target="_self">
+                <i class="iconfont icon-bilibilidonghua"></i>
+                <span>BiliBili</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://github.com/unname499" target="_self">
+                <i class="iconfont icon-github"></i>
+                <span>GitHub</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-home-fill"></i>
+                  <span>主页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="https://space.bilibili.com/3494366895147903" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-bilibilidonghua"></i>
+                  <span>BiliBili</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="https://github.com/unname499" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-github"></i>
+                  <span>GitHub</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://api.xsot.cn/bing?jump=true') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="如何在ESP32 Arduino框架下解压和风天气的GZIP数据"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-08-13 14:09" pubdate>
+          2026年8月13日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          21k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          179 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">如何在ESP32 Arduino框架下解压和风天气的GZIP数据</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <div class="note note-warning">
+            <p>观前提示：本人并不是这方面的大佬，这些代码是我和 DeepSeek 一起写出来的，所以代码烂是正常的。<br>另外，我用的是 PlatformIO，所以本教程对于 Arduino IDE 有些方法可能不适用。</p> 
+          </div>
+<div class="note note-info">
+            <p>完整源码在下方「完整demo」章节，建议先看完讲解再复制使用。</p> 
+          </div>
+
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><ul>
+<li>ESP32开发板一块</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/tignioj/ArduinoUZlib/">ArduinoUZlib</a>（<strong>不要去库管理器下ArduinoUZlib，那是残缺版本，本人踩过这个坑</strong>）</li>
+<li>库管理器的UrlEncode（plageoj&#x2F;UrlEncode@^1.0.1）</li>
+<li>还有一个ArduinoJSON库，库管理器里有，所以不给出链接</li>
+</ul>
+<h2 id="开干"><a href="#开干" class="headerlink" title="开干"></a>开干</h2><p>打开项目下的platformio.ini文件，填入以下内容，等待安装完成，慢了挂代理</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">lib_deps</span> = <br>	bblanchon/ArduinoJson@^7.2.2<br>	https://github.com/tignioj/ArduinoUZlib.git<br>	plageoj/UrlEncode@^1.0.1<br></code></pre></td></tr></table></figure>
+<p>然后，在main.cpp里定义一个宏定义：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">define</span> LOG(level, fmt, ...) \</span><br><span class="hljs-meta">    do &#123; \</span><br><span class="hljs-meta">        time_t now = time(nullptr); \</span><br><span class="hljs-meta">        <span class="hljs-keyword">if</span> (now &lt; 100000) &#123; \</span><br><span class="hljs-meta">            Serial.printf(<span class="hljs-string">&quot;[--:--:--] [%s] &quot;</span> fmt <span class="hljs-string">&quot;\n&quot;</span>, level, ##__VA_ARGS__); \</span><br><span class="hljs-meta">        &#125; <span class="hljs-keyword">else</span> &#123; \</span><br><span class="hljs-meta">            struct tm* tm = localtime(&amp;now); \</span><br><span class="hljs-meta">            char t[20]; \</span><br><span class="hljs-meta">            strftime(t, sizeof(t), <span class="hljs-string">&quot;%H:%M:%S&quot;</span>, tm); \</span><br><span class="hljs-meta">            Serial.printf(<span class="hljs-string">&quot;[%s] [%s] &quot;</span> fmt <span class="hljs-string">&quot;\n&quot;</span>, t, level, ##__VA_ARGS__); \</span><br><span class="hljs-meta">        &#125; \</span><br><span class="hljs-meta">    &#125; while(0)</span><br><br></code></pre></td></tr></table></figure>
+<p><em>这段代码有何用处？就是串口输出的时候的日志会带上时间，如果不需要，可以不添加，但是后面的<code>LOG(&quot;INFO&quot;,&quot;XXX&quot;);</code>就得改成<code>Serial.println(&quot;[INFO] XXX&quot;);</code>或者换成自己的风格。</em></p>
+<p>然后添加以下代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">// ========== 调试开关（注释掉即关闭 DEBUG 输出） ==========</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DEBUG</span><br><br><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">decompressGzip</span><span class="hljs-params">(WiFiClient* stream, HTTPClient&amp; http, String* outJson)</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (!stream) &#123;<br>        <span class="hljs-built_in">LOG</span>(<span class="hljs-string">&quot;ERR&quot;</span> ,<span class="hljs-string">&quot;stream 指针为空&quot;</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    <br>    <span class="hljs-type">size_t</span> totalSize = http.<span class="hljs-built_in">getSize</span>();<br>    <span class="hljs-keyword">if</span> (totalSize &lt;= <span class="hljs-number">0</span>) &#123;<br>        <span class="hljs-built_in">LOG</span>(<span class="hljs-string">&quot;ERR&quot;</span>, <span class="hljs-string">&quot;无法获取数据大小&quot;</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    <span class="hljs-built_in">LOG</span>(<span class="hljs-string">&quot;INFO&quot;</span>, <span class="hljs-string">&quot;压缩数据大小: %d 字节&quot;</span>, totalSize);<br>    <br>    <span class="hljs-type">uint8_t</span>* compressedData = (<span class="hljs-type">uint8_t</span>*)<span class="hljs-built_in">malloc</span>(totalSize);<br>    <span class="hljs-keyword">if</span> (!compressedData) &#123;<br>        <span class="hljs-built_in">LOG</span>(<span class="hljs-string">&quot;ERR&quot;</span> ,<span class="hljs-string">&quot;内存分配失败&quot;</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    <br>    <span class="hljs-type">size_t</span> readSoFar = <span class="hljs-number">0</span>;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> startTime = <span class="hljs-built_in">millis</span>();<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> timeout = <span class="hljs-number">5000</span>;<br>    <br>    <span class="hljs-keyword">while</span> (readSoFar &lt; totalSize &amp;&amp; stream-&gt;<span class="hljs-built_in">connected</span>()) &#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">millis</span>() - startTime &gt; timeout) &#123;<br>            <span class="hljs-built_in">LOG</span>(<span class="hljs-string">&quot;ERR&quot;</span> ,<span class="hljs-string">&quot;读取超时&quot;</span>);<br>            <span class="hljs-built_in">free</span>(compressedData);<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>        &#125;<br>        <br>        <span class="hljs-keyword">if</span> (stream-&gt;<span class="hljs-built_in">available</span>()) &#123;<br>            <span class="hljs-type">int</span> len = stream-&gt;<span class="hljs-built_in">read</span>(compressedData + readSoFar, totalSize - readSoFar);<br>            <span class="hljs-keyword">if</span> (len &gt; <span class="hljs-number">0</span>) &#123;<br>                readSoFar += len;<br>                startTime = <span class="hljs-built_in">millis</span>();<br>            &#125;<br>        &#125;<br>        <span class="hljs-built_in">delay</span>(<span class="hljs-number">1</span>);<br>        <span class="hljs-built_in">yield</span>();<br>    &#125;<br>    <br>    <span class="hljs-keyword">if</span> (readSoFar != totalSize) &#123;<br>        <span class="hljs-built_in">LOG</span>(<span class="hljs-string">&quot;WARN&quot;</span> ,<span class="hljs-string">&quot;预期 %d，实际 %d&quot;</span>, totalSize, readSoFar);<br>        <span class="hljs-built_in">free</span>(compressedData);<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    <span class="hljs-built_in">LOG</span>(<span class="hljs-string">&quot;INFO&quot;</span> ,<span class="hljs-string">&quot;读取 %d 字节压缩数据&quot;</span>, readSoFar);<br>    <br>    <span class="hljs-keyword">if</span> (readSoFar &lt; <span class="hljs-number">2</span> || compressedData[<span class="hljs-number">0</span>] != <span class="hljs-number">0x1F</span> || compressedData[<span class="hljs-number">1</span>] != <span class="hljs-number">0x8B</span>) &#123;<br>        <span class="hljs-built_in">LOG</span>(<span class="hljs-string">&quot;ERR&quot;</span> ,<span class="hljs-string">&quot;不是 Gzip 格式&quot;</span>);<br>        <span class="hljs-built_in">free</span>(compressedData);<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    <span class="hljs-built_in">LOG</span>(<span class="hljs-string">&quot;INFO&quot;</span> ,<span class="hljs-string">&quot;检测到 Gzip 格式&quot;</span>);<br>    <br>    <span class="hljs-built_in">LOG</span>(<span class="hljs-string">&quot;INFO&quot;</span> ,<span class="hljs-string">&quot;开始解压...&quot;</span>);<br>    <span class="hljs-type">uint8_t</span>* outbuf = <span class="hljs-literal">NULL</span>;<br>    <span class="hljs-type">uint32_t</span> outSize = <span class="hljs-number">0</span>;<br>    <br>    <span class="hljs-type">int</span> result = ArduinoUZlib::<span class="hljs-built_in">decompress</span>(compressedData, readSoFar, outbuf, outSize);<br>    <br>    <span class="hljs-built_in">free</span>(compressedData);<br>    compressedData = <span class="hljs-literal">NULL</span>;<br>    <br>    <span class="hljs-keyword">if</span> (result &lt; <span class="hljs-number">0</span>) &#123;<br>        <span class="hljs-built_in">LOG</span>(<span class="hljs-string">&quot;ERR&quot;</span> ,<span class="hljs-string">&quot;解压失败，错误码: %d&quot;</span>, result);<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    <br>    outSize = result;<br>    <span class="hljs-built_in">LOG</span>(<span class="hljs-string">&quot;OK&quot;</span>, <span class="hljs-string">&quot;解压成功，大小: %d 字节&quot;</span>, outSize);<br>    <br>    <span class="hljs-meta">#<span class="hljs-keyword">ifdef</span> DEBUG</span><br>    Serial.<span class="hljs-built_in">println</span>();<br>    <span class="hljs-built_in">LOG</span>(<span class="hljs-string">&quot;DEBUG&quot;</span> ,<span class="hljs-string">&quot;--- JSON 数据 ---&quot;</span>);<br>    Serial.<span class="hljs-built_in">write</span>(outbuf, outSize);<br>    Serial.<span class="hljs-built_in">println</span>();<br>    <span class="hljs-built_in">LOG</span>(<span class="hljs-string">&quot;DEBUG&quot;</span> ,<span class="hljs-string">&quot;--- JSON 结束 ---\n&quot;</span>);<br>    <span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br>    <br>    <span class="hljs-keyword">if</span> (outJson != <span class="hljs-literal">nullptr</span>) &#123;<br>        outJson-&gt;<span class="hljs-built_in">clear</span>();<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">uint32_t</span> i = <span class="hljs-number">0</span>; i &lt; outSize; i++) &#123;<br>            *outJson += (<span class="hljs-type">char</span>)outbuf[i];<br>        &#125;<br>    &#125;<br>    <br>    <span class="hljs-comment">// 只在 outbuf 非 NULL 时释放</span><br>    <span class="hljs-keyword">if</span> (outbuf != <span class="hljs-literal">NULL</span>) &#123;<br>        <span class="hljs-built_in">free</span>(outbuf);<br>        outbuf = <span class="hljs-literal">NULL</span>;<br>    &#125;<br>    <br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="完整demo"><a href="#完整demo" class="headerlink" title="完整demo"></a>完整demo</h2><p>现在就好了，然后我们来写main.cpp的完整代码</p>
+<div class="note note-info">
+            <p>如果编译报错，尝试把 #include &lt;UrlEncode.h&gt; 改成 #include “UrlEncode.h”</p> 
+          </div>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;Arduino.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;WiFi.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;WiFiClientSecure.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;HTTPClient.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;ArduinoJson.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;ArduinoUZlib.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;UrlEncode.h&gt;</span></span><br><br><span class="hljs-comment">// ========== 调试开关，不用即关（注释掉就是关） ==========</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> DEBUG</span><br><br><span class="hljs-comment">// ========== WiFi 配置 ==========</span><br><span class="hljs-type">const</span> <span class="hljs-type">char</span>* WIFI_SSID = <span class="hljs-string">&quot;你的WiFi&quot;</span>;<br><span class="hljs-type">const</span> <span class="hljs-type">char</span>* WIFI_PASS = <span class="hljs-string">&quot;你的密码&quot;</span>;<br><br><span class="hljs-comment">// ========== API 配置 ==========</span><br><span class="hljs-type">const</span> <span class="hljs-type">char</span>* GEO_API_URL = <span class="hljs-string">&quot;https://your-api-host.com/geo/v2/city/lookup?location=&quot;</span>;<br><br>WiFiClientSecure secureClient;<br><br><span class="hljs-comment">// ========== 日志宏 ==========</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> LOG(level, fmt, ...) \</span><br><span class="hljs-meta">    do &#123; \</span><br><span class="hljs-meta">        time_t now = time(nullptr); \</span><br><span class="hljs-meta">        <span class="hljs-keyword">if</span> (now &lt; 100000) &#123; \</span><br><span class="hljs-meta">            Serial.printf(<span class="hljs-string">&quot;[--:--:--] [%s] &quot;</span> fmt <span class="hljs-string">&quot;\n&quot;</span>, level, ##__VA_ARGS__); \</span><br><span class="hljs-meta">        &#125; <span class="hljs-keyword">else</span> &#123; \</span><br><span class="hljs-meta">            struct tm* tm = localtime(&amp;now); \</span><br><span class="hljs-meta">            char t[20]; \</span><br><span class="hljs-meta">            strftime(t, sizeof(t), <span class="hljs-string">&quot;%H:%M:%S&quot;</span>, tm); \</span><br><span class="hljs-meta">            Serial.printf(<span class="hljs-string">&quot;[%s] [%s] &quot;</span> fmt <span class="hljs-string">&quot;\n&quot;</span>, t, level, ##__VA_ARGS__); \</span><br><span class="hljs-meta">        &#125; \</span><br><span class="hljs-meta">    &#125; while(0)</span><br><br><span class="hljs-comment">// ========== Gzip 解压函数 ==========</span><br><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">decompressGzip</span><span class="hljs-params">(WiFiClient* stream, HTTPClient&amp; http, String* outJson)</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (!stream) &#123;<br>        <span class="hljs-built_in">LOG</span>(<span class="hljs-string">&quot;ERR&quot;</span> ,<span class="hljs-string">&quot;stream 指针为空&quot;</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    <br>    <span class="hljs-type">size_t</span> totalSize = http.<span class="hljs-built_in">getSize</span>();<br>    <span class="hljs-keyword">if</span> (totalSize &lt;= <span class="hljs-number">0</span>) &#123;<br>        <span class="hljs-built_in">LOG</span>(<span class="hljs-string">&quot;ERR&quot;</span>, <span class="hljs-string">&quot;无法获取数据大小&quot;</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    <span class="hljs-built_in">LOG</span>(<span class="hljs-string">&quot;INFO&quot;</span>, <span class="hljs-string">&quot;压缩数据大小: %d 字节&quot;</span>, totalSize);<br>    <br>    <span class="hljs-type">uint8_t</span>* compressedData = (<span class="hljs-type">uint8_t</span>*)<span class="hljs-built_in">malloc</span>(totalSize);<br>    <span class="hljs-keyword">if</span> (!compressedData) &#123;<br>        <span class="hljs-built_in">LOG</span>(<span class="hljs-string">&quot;ERR&quot;</span> ,<span class="hljs-string">&quot;内存分配失败&quot;</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    <br>    <span class="hljs-type">size_t</span> readSoFar = <span class="hljs-number">0</span>;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> startTime = <span class="hljs-built_in">millis</span>();<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> timeout = <span class="hljs-number">5000</span>;<br>    <br>    <span class="hljs-keyword">while</span> (readSoFar &lt; totalSize &amp;&amp; stream-&gt;<span class="hljs-built_in">connected</span>()) &#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">millis</span>() - startTime &gt; timeout) &#123;<br>            <span class="hljs-built_in">LOG</span>(<span class="hljs-string">&quot;ERR&quot;</span> ,<span class="hljs-string">&quot;读取超时&quot;</span>);<br>            <span class="hljs-built_in">free</span>(compressedData);<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>        &#125;<br>        <br>        <span class="hljs-keyword">if</span> (stream-&gt;<span class="hljs-built_in">available</span>()) &#123;<br>            <span class="hljs-type">int</span> len = stream-&gt;<span class="hljs-built_in">read</span>(compressedData + readSoFar, totalSize - readSoFar);<br>            <span class="hljs-keyword">if</span> (len &gt; <span class="hljs-number">0</span>) &#123;<br>                readSoFar += len;<br>                startTime = <span class="hljs-built_in">millis</span>();<br>            &#125;<br>        &#125;<br>        <span class="hljs-built_in">delay</span>(<span class="hljs-number">1</span>);<br>        <span class="hljs-built_in">yield</span>();<br>    &#125;<br>    <br>    <span class="hljs-keyword">if</span> (readSoFar != totalSize) &#123;<br>        <span class="hljs-built_in">LOG</span>(<span class="hljs-string">&quot;WARN&quot;</span> ,<span class="hljs-string">&quot;预期 %d，实际 %d&quot;</span>, totalSize, readSoFar);<br>        <span class="hljs-built_in">free</span>(compressedData);<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    <span class="hljs-built_in">LOG</span>(<span class="hljs-string">&quot;INFO&quot;</span> ,<span class="hljs-string">&quot;读取 %d 字节压缩数据&quot;</span>, readSoFar);<br>    <br>    <span class="hljs-keyword">if</span> (readSoFar &lt; <span class="hljs-number">2</span> || compressedData[<span class="hljs-number">0</span>] != <span class="hljs-number">0x1F</span> || compressedData[<span class="hljs-number">1</span>] != <span class="hljs-number">0x8B</span>) &#123;<br>        <span class="hljs-built_in">LOG</span>(<span class="hljs-string">&quot;ERR&quot;</span> ,<span class="hljs-string">&quot;不是 Gzip 格式&quot;</span>);<br>        <span class="hljs-built_in">free</span>(compressedData);<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    <span class="hljs-built_in">LOG</span>(<span class="hljs-string">&quot;INFO&quot;</span> ,<span class="hljs-string">&quot;检测到 Gzip 格式&quot;</span>);<br>    <br>    <span class="hljs-built_in">LOG</span>(<span class="hljs-string">&quot;INFO&quot;</span> ,<span class="hljs-string">&quot;开始解压...&quot;</span>);<br>    <span class="hljs-type">uint8_t</span>* outbuf = <span class="hljs-literal">NULL</span>;<br>    <span class="hljs-type">uint32_t</span> outSize = <span class="hljs-number">0</span>;<br>    <br>    <span class="hljs-type">int</span> result = ArduinoUZlib::<span class="hljs-built_in">decompress</span>(compressedData, readSoFar, outbuf, outSize);<br>    <br>    <span class="hljs-built_in">free</span>(compressedData);<br>    compressedData = <span class="hljs-literal">NULL</span>;<br>    <br>    <span class="hljs-keyword">if</span> (result &lt; <span class="hljs-number">0</span>) &#123;<br>        <span class="hljs-built_in">LOG</span>(<span class="hljs-string">&quot;ERR&quot;</span> ,<span class="hljs-string">&quot;解压失败，错误码: %d&quot;</span>, result);<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    <br>    outSize = result;<br>    <span class="hljs-built_in">LOG</span>(<span class="hljs-string">&quot;OK&quot;</span>, <span class="hljs-string">&quot;解压成功，大小: %d 字节&quot;</span>, outSize);<br>    <br>    <span class="hljs-meta">#<span class="hljs-keyword">ifdef</span> DEBUG</span><br>    Serial.<span class="hljs-built_in">println</span>();<br>    <span class="hljs-built_in">LOG</span>(<span class="hljs-string">&quot;DEBUG&quot;</span> ,<span class="hljs-string">&quot;--- JSON 数据 ---&quot;</span>);<br>    Serial.<span class="hljs-built_in">write</span>(outbuf, outSize);<br>    Serial.<span class="hljs-built_in">println</span>();<br>    <span class="hljs-built_in">LOG</span>(<span class="hljs-string">&quot;DEBUG&quot;</span> ,<span class="hljs-string">&quot;--- JSON 结束 ---\n&quot;</span>);<br>    <span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br>    <br>    <span class="hljs-keyword">if</span> (outJson != <span class="hljs-literal">nullptr</span>) &#123;<br>        outJson-&gt;<span class="hljs-built_in">clear</span>();<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">uint32_t</span> i = <span class="hljs-number">0</span>; i &lt; outSize; i++) &#123;<br>            *outJson += (<span class="hljs-type">char</span>)outbuf[i];<br>        &#125;<br>    &#125;<br>    <br>    <span class="hljs-comment">// 只在 outbuf 非 NULL 时释放</span><br>    <span class="hljs-keyword">if</span> (outbuf != <span class="hljs-literal">NULL</span>) &#123;<br>        <span class="hljs-built_in">free</span>(outbuf);<br>        outbuf = <span class="hljs-literal">NULL</span>;<br>    &#125;<br>    <br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>&#125;<br><br><span class="hljs-comment">// ========== 获取 Geo API 数据 ==========</span><br><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">getGeoData</span><span class="hljs-params">(<span class="hljs-type">const</span> String&amp; location, String* outJson)</span> </span>&#123;<br>    String encodedLocation = <span class="hljs-built_in">urlEncode</span>(location);<br>    String fullUrl = <span class="hljs-built_in">String</span>(GEO_API_URL) + encodedLocation;<br>    <br>    Serial.<span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;[INFO] 请求 URL: &quot;</span> + fullUrl);<br>    <br>    HTTPClient http;<br>    http.<span class="hljs-built_in">begin</span>(secureClient, fullUrl);<br>    http.<span class="hljs-built_in">addHeader</span>(<span class="hljs-string">&quot;Accept-Encoding&quot;</span>, <span class="hljs-string">&quot;gzip, deflate&quot;</span>);<br>    http.<span class="hljs-built_in">setTimeout</span>(<span class="hljs-number">10000</span>);<br>    <br>    <span class="hljs-type">int</span> httpCode = http.<span class="hljs-built_in">GET</span>();<br>    Serial.<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[INFO] HTTP 状态码: %d\n&quot;</span>, httpCode);<br>    <br>    <span class="hljs-keyword">if</span> (httpCode != HTTP_CODE_OK) &#123;<br>        Serial.<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[ERR] HTTP 请求失败: %d\n&quot;</span>, httpCode);<br>        http.<span class="hljs-built_in">end</span>();<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    <br>    WiFiClient* stream = http.<span class="hljs-built_in">getStreamPtr</span>();<br>    <span class="hljs-type">bool</span> success = <span class="hljs-built_in">decompressGzip</span>(stream, http, outJson);<br>    http.<span class="hljs-built_in">end</span>();<br>    <br>    <span class="hljs-keyword">return</span> success;<br>&#125;<br><br><span class="hljs-comment">// ========== 解析 Geo JSON，提取经纬度 ==========</span><br><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">parseGeoJson</span><span class="hljs-params">(<span class="hljs-type">const</span> String&amp; json, String* lat, String* lon, String* cityName)</span> </span>&#123;<br>    JsonDocument doc;<br>    DeserializationError error = <span class="hljs-built_in">deserializeJson</span>(doc, json);<br>    <br>    <span class="hljs-keyword">if</span> (error) &#123;<br>        Serial.<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[ERR] JSON 解析失败: %s\n&quot;</span>, error.<span class="hljs-built_in">c_str</span>());<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    <br>    <span class="hljs-keyword">if</span> (doc[<span class="hljs-string">&quot;location&quot;</span>][<span class="hljs-number">0</span>].<span class="hljs-built_in">isNull</span>()) &#123;<br>        Serial.<span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;[ERR] 未找到 location 数据&quot;</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    <br>    <span class="hljs-keyword">if</span> (lat != <span class="hljs-literal">nullptr</span>) *lat = doc[<span class="hljs-string">&quot;location&quot;</span>][<span class="hljs-number">0</span>][<span class="hljs-string">&quot;lat&quot;</span>].<span class="hljs-built_in">as</span>&lt;String&gt;();<br>    <span class="hljs-keyword">if</span> (lon != <span class="hljs-literal">nullptr</span>) *lon = doc[<span class="hljs-string">&quot;location&quot;</span>][<span class="hljs-number">0</span>][<span class="hljs-string">&quot;lon&quot;</span>].<span class="hljs-built_in">as</span>&lt;String&gt;();<br>    <span class="hljs-keyword">if</span> (cityName != <span class="hljs-literal">nullptr</span>) *cityName = doc[<span class="hljs-string">&quot;location&quot;</span>][<span class="hljs-number">0</span>][<span class="hljs-string">&quot;name&quot;</span>].<span class="hljs-built_in">as</span>&lt;String&gt;();<br>    <br>    Serial.<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[INFO] 城市: %s\n&quot;</span>, cityName != <span class="hljs-literal">nullptr</span> ? cityName-&gt;<span class="hljs-built_in">c_str</span>() : <span class="hljs-string">&quot;未知&quot;</span>);<br>    Serial.<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[INFO] 经纬度: %s, %s\n&quot;</span>, <br>                  lat != <span class="hljs-literal">nullptr</span> ? lat-&gt;<span class="hljs-built_in">c_str</span>() : <span class="hljs-string">&quot;未知&quot;</span>,<br>                  lon != <span class="hljs-literal">nullptr</span> ? lon-&gt;<span class="hljs-built_in">c_str</span>() : <span class="hljs-string">&quot;未知&quot;</span>);<br>    <br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>&#125;<br><br><span class="hljs-comment">// ========== setup ==========</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">setup</span><span class="hljs-params">()</span> </span>&#123;<br>    Serial.<span class="hljs-built_in">begin</span>(<span class="hljs-number">115200</span>);<br>    <span class="hljs-built_in">delay</span>(<span class="hljs-number">1000</span>);<br>    Serial.<span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;\n=========================================&quot;</span>);<br>    Serial.<span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;Geo API 获取 + Gzip 解压 测试&quot;</span>);<br>    Serial.<span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;=========================================\n&quot;</span>);<br>    <br>    <span class="hljs-comment">// 1. WiFi</span><br>    Serial.<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[INFO] 连接 WiFi: %s\n&quot;</span>, WIFI_SSID);<br>    WiFi.<span class="hljs-built_in">begin</span>(WIFI_SSID, WIFI_PASS);<br>    <span class="hljs-type">int</span> attempts = <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">while</span> (WiFi.<span class="hljs-built_in">status</span>() != WL_CONNECTED &amp;&amp; attempts &lt; <span class="hljs-number">30</span>) &#123;<br>        <span class="hljs-built_in">delay</span>(<span class="hljs-number">500</span>);<br>        Serial.<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;.&quot;</span>);<br>        attempts++;<br>    &#125;<br>    <span class="hljs-keyword">if</span> (WiFi.<span class="hljs-built_in">status</span>() != WL_CONNECTED) &#123;<br>        Serial.<span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;\n[ERR] WiFi 连接失败&quot;</span>);<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br>    Serial.<span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;\n[INFO] WiFi 连接成功&quot;</span>);<br>    Serial.<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;[INFO] IP: &quot;</span>);<br>    Serial.<span class="hljs-built_in">println</span>(WiFi.<span class="hljs-built_in">localIP</span>());<br>    <br>    <span class="hljs-comment">// 2. SSL 客户端</span><br>    secureClient.<span class="hljs-built_in">setInsecure</span>();<br>    secureClient.<span class="hljs-built_in">setTimeout</span>(<span class="hljs-number">10000</span>);<br>    <br>    <span class="hljs-comment">// 3. 获取 Geo 数据</span><br>    String location = <span class="hljs-string">&quot;北京&quot;</span>;<br>    String rawJson;<br>    <br>    Serial.<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\n[INFO] 查询位置: %s\n&quot;</span>, location.<span class="hljs-built_in">c_str</span>());<br>    <br>    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">getGeoData</span>(location, &amp;rawJson)) &#123;<br>        Serial.<span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;[INFO] Geo 数据获取成功&quot;</span>);<br>        Serial.<span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;\n[DEBUG] 原始 JSON:&quot;</span>);<br>        Serial.<span class="hljs-built_in">println</span>(rawJson);<br>        Serial.<span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;\n[DEBUG] --- 结束 ---\n&quot;</span>);<br>        <br>        <span class="hljs-comment">// 4. 解析</span><br>        String lat, lon, cityName;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">parseGeoJson</span>(rawJson, &amp;lat, &amp;lon, &amp;cityName)) &#123;<br>            Serial.<span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;[OK] 解析成功&quot;</span>);<br>        &#125;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        Serial.<span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;[ERR] Geo 数据获取失败&quot;</span>);<br>    &#125;<br>    <br>    Serial.<span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;\n[INFO] 测试完成&quot;</span>);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-built_in">delay</span>(<span class="hljs-number">10000</span>); <span class="hljs-comment">// 什么也不做</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="效果展示"><a href="#效果展示" class="headerlink" title="效果展示"></a>效果展示</h2><p>（因为我没有同步NTP时间，所以日志显示的就是[–:–:–]）</p>
+<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs prolog">=========================================<br><span class="hljs-symbol">Geo</span> <span class="hljs-symbol">API</span> 获取 + <span class="hljs-symbol">Gzip</span> 解压 测试<br>=========================================<br><br>[<span class="hljs-symbol">INFO</span>] 连接 <span class="hljs-symbol">WiFi</span>: <span class="hljs-symbol">TP</span>-<span class="hljs-symbol">LINK_16F3</span><br>....<br>[<span class="hljs-symbol">INFO</span>] <span class="hljs-symbol">WiFi</span> 连接成功<br>[<span class="hljs-symbol">INFO</span>] <span class="hljs-symbol">IP</span>: <span class="hljs-number">192.168</span><span class="hljs-number">.0</span><span class="hljs-number">.104</span><br><br>[<span class="hljs-symbol">INFO</span>] 查询位置: 北京<br>[<span class="hljs-symbol">INFO</span>] 请求 <span class="hljs-symbol">URL</span>: （码）<br>[<span class="hljs-symbol">INFO</span>] <span class="hljs-symbol">HTTP</span> 状态码: <span class="hljs-number">200</span><br>[--:--:--] [<span class="hljs-symbol">INFO</span>] 压缩数据大小: <span class="hljs-number">629</span> 字节<br>[--:--:--] [<span class="hljs-symbol">INFO</span>] 读取 <span class="hljs-number">629</span> 字节压缩数据<br>[--:--:--] [<span class="hljs-symbol">INFO</span>] 检测到 <span class="hljs-symbol">Gzip</span> 格式<br>[--:--:--] [<span class="hljs-symbol">INFO</span>] 开始解压...<br>decompressed <span class="hljs-number">2822</span> bytes<br>[--:--:--] [<span class="hljs-symbol">OK</span>] 解压成功，大小: <span class="hljs-number">2822</span> 字节<br><br>[--:--:--] [<span class="hljs-symbol">DEBUG</span>] --- <span class="hljs-symbol">JSON</span> 数据 ---<br>&#123;<span class="hljs-string">&quot;code&quot;</span>:<span class="hljs-string">&quot;200&quot;</span>,<span class="hljs-string">&quot;location&quot;</span>:[&#123;<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;北京&quot;</span>,<span class="hljs-string">&quot;id&quot;</span>:<span class="hljs-string">&quot;101010100&quot;</span>,<span class="hljs-string">&quot;lat&quot;</span>:<span class="hljs-string">&quot;39.90499&quot;</span>,<span class="hljs-string">&quot;lon&quot;</span>:<span class="hljs-string">&quot;116.40529&quot;</span>,<span class="hljs-string">&quot;adm2&quot;</span>:<span class="hljs-string">&quot;北京&quot;</span>,<span class="hljs-string">&quot;adm1&quot;</span>:<span class="hljs-string">&quot;北京市&quot;</span>,<span class="hljs-string">&quot;country&quot;</span>:<span class="hljs-string">&quot;中国&quot;</span>,<span class="hljs-string">&quot;tz&quot;</span>:<span class="hljs-string">&quot;Asia/Shanghai&quot;</span>,<span class="hljs-string">&quot;utcOffset&quot;</span>:<span class="hljs-string">&quot;+08:00&quot;</span>,<span class="hljs-string">&quot;isDst&quot;</span>:<span class="hljs-string">&quot;0&quot;</span>,<span class="hljs-string">&quot;type&quot;</span>:<span class="hljs-string">&quot;city&quot;</span>,<span class="hljs-string">&quot;rank&quot;</span>:<span class="hljs-string">&quot;10&quot;</span>,<span class="hljs-string">&quot;fxLink&quot;</span>:<span class="hljs-string">&quot;https://www.qweather.com/weather/beijing-101010100.html&quot;</span>&#125;,&#123;<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;海淀&quot;</span>,<span class="hljs-string">&quot;id&quot;</span>:<span class="hljs-string">&quot;101010200&quot;</span>,<span class="hljs-string">&quot;lat&quot;</span>:<span class="hljs-string">&quot;39.95607&quot;</span>,<span class="hljs-string">&quot;lon&quot;</span>:<span class="hljs-string">&quot;116.31032&quot;</span>,<span class="hljs-string">&quot;adm2&quot;</span>:<span class="hljs-string">&quot;北京&quot;</span>,<span class="hljs-string">&quot;adm1&quot;</span>:<span class="hljs-string">&quot;北京市&quot;</span>,<span class="hljs-string">&quot;country&quot;</span>:<span class="hljs-string">&quot;中国&quot;</span>,<span class="hljs-string">&quot;tz&quot;</span>:<span class="hljs-string">&quot;Asia/Shanghai&quot;</span>,<span class="hljs-string">&quot;utcOffset&quot;</span>:<span class="hljs-string">&quot;+08:00&quot;</span>,<span class="hljs-string">&quot;isDst&quot;</span>:<span class="hljs-string">&quot;0&quot;</span>,<span class="hljs-string">&quot;type&quot;</span>:<span class="hljs-string">&quot;city&quot;</span>,<span class="hljs-string">&quot;rank&quot;</span>:<span class="hljs-string">&quot;15&quot;</span>,<span class="hljs-string">&quot;fxLink&quot;</span>:<span class="hljs-string">&quot;https://www.qweather.com/weather/haidian-101010200.html&quot;</span>&#125;,&#123;<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;朝阳&quot;</span>,<span class="hljs-string">&quot;id&quot;</span>:<span class="hljs-string">&quot;101010300&quot;</span>,<span class="hljs-string">&quot;lat&quot;</span>:<span class="hljs-string">&quot;39.92149&quot;</span>,<span class="hljs-string">&quot;lon&quot;</span>:<span class="hljs-string">&quot;116.48641&quot;</span>,<span class="hljs-string">&quot;adm2&quot;</span>:<span class="hljs-string">&quot;北京&quot;</span>,<span class="hljs-string">&quot;adm1&quot;</span>:<span class="hljs-string">&quot;北京市&quot;</span>,<span class="hljs-string">&quot;country&quot;</span>:<span class="hljs-string">&quot;中国&quot;</span>,<span class="hljs-string">&quot;tz&quot;</span>:<span class="hljs-string">&quot;Asia/Shanghai&quot;</span>,<span class="hljs-string">&quot;utcOffset&quot;</span>:<span class="hljs-string">&quot;+08:00&quot;</span>,<span class="hljs-string">&quot;isDst&quot;</span>:<span class="hljs-string">&quot;0&quot;</span>,<span class="hljs-string">&quot;type&quot;</span>:<span class="hljs-string">&quot;city&quot;</span>,<span class="hljs-string">&quot;rank&quot;</span>:<span class="hljs-string">&quot;15&quot;</span>,<span class="hljs-string">&quot;fxLink&quot;</span>:<span class="hljs-string">&quot;https://www.qweather.com/weather/chaoyang-101010300.html&quot;</span>&#125;,&#123;<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;顺义&quot;</span>,<span class="hljs-string">&quot;id&quot;</span>:<span class="hljs-string">&quot;101010400&quot;</span>,<span class="hljs-string">&quot;lat&quot;</span>:<span class="hljs-string">&quot;40.12894&quot;</span>,<span class="hljs-string">&quot;lon&quot;</span>:<span class="hljs-string">&quot;116.65353&quot;</span>,<span class="hljs-string">&quot;adm2&quot;</span>:<span class="hljs-string">&quot;北京&quot;</span>,<span class="hljs-string">&quot;adm1&quot;</span>:<span class="hljs-string">&quot;北京市&quot;</span>,<span class="hljs-string">&quot;country&quot;</span>:<span class="hljs-string">&quot;中国&quot;</span>,<span class="hljs-string">&quot;tz&quot;</span>:<span class="hljs-string">&quot;Asia/Shanghai&quot;</span>,<span class="hljs-string">&quot;utcOffset&quot;</span>:<span class="hljs-string">&quot;+08:00&quot;</span>,<span class="hljs-string">&quot;isDst&quot;</span>:<span class="hljs-string">&quot;0&quot;</span>,<span class="hljs-string">&quot;type&quot;</span>:<span class="hljs-string">&quot;city&quot;</span>,<span class="hljs-string">&quot;rank&quot;</span>:<span class="hljs-string">&quot;33&quot;</span>,<span class="hljs-string">&quot;fxLink&quot;</span>:<span class="hljs-string">&quot;https://www.qweather.com/weather/shunyi-101010400.html&quot;</span>&#125;,&#123;<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;怀柔&quot;</span>,<span class="hljs-string">&quot;id&quot;</span>:<span class="hljs-string">&quot;101010500&quot;</span>,<span class="hljs-string">&quot;lat&quot;</span>:<span class="hljs-string">&quot;40.32427&quot;</span>,<span class="hljs-string">&quot;lon&quot;</span>:<span class="hljs-string">&quot;116.63712&quot;</span>,<span class="hljs-string">&quot;adm2&quot;</span>:<span class="hljs-string">&quot;北京&quot;</span>,<span class="hljs-string">&quot;adm1&quot;</span>:<span class="hljs-string">&quot;北京市&quot;</span>,<span class="hljs-string">&quot;country&quot;</span>:<span class="hljs-string">&quot;中国&quot;</span>,<span class="hljs-string">&quot;tz&quot;</span>:<span class="hljs-string">&quot;Asia/Shanghai&quot;</span>,<span class="hljs-string">&quot;utcOffset&quot;</span>:<span class="hljs-string">&quot;+08:00&quot;</span>,<span class="hljs-string">&quot;isDst&quot;</span>:<span class="hljs-string">&quot;0&quot;</span>,<span class="hljs-string">&quot;type&quot;</span>:<span class="hljs-string">&quot;city&quot;</span>,<span class="hljs-string">&quot;rank&quot;</span>:<span class="hljs-string">&quot;33&quot;</span>,<span class="hljs-string">&quot;fxLink&quot;</span>:<span class="hljs-string">&quot;https://www.qweather.com/weather/huairou-101010500.html&quot;</span>&#125;,&#123;<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;通州&quot;</span>,<span class="hljs-string">&quot;id&quot;</span>:<span class="hljs-string">&quot;101010600&quot;</span>,<span class="hljs-string">&quot;lat&quot;</span>:<span class="hljs-string">&quot;39.90249&quot;</span>,<span class="hljs-string">&quot;lon&quot;</span>:<span class="hljs-string">&quot;116.65860&quot;</span>,<span class="hljs-string">&quot;adm2&quot;</span>:<span class="hljs-string">&quot;北京&quot;</span>,<span class="hljs-string">&quot;adm1&quot;</span>:<span class="hljs-string">&quot;北京市&quot;</span>,<span class="hljs-string">&quot;country&quot;</span>:<span class="hljs-string">&quot;中国&quot;</span>,<span class="hljs-string">&quot;tz&quot;</span>:<span class="hljs-string">&quot;Asia/Shanghai&quot;</span>,<span class="hljs-string">&quot;utcOffset&quot;</span>:<span class="hljs-string">&quot;+08:00&quot;</span>,<span class="hljs-string">&quot;isDst&quot;</span>:<span class="hljs-string">&quot;0&quot;</span>,<span class="hljs-string">&quot;type&quot;</span>:<span class="hljs-string">&quot;city&quot;</span>,<span class="hljs-string">&quot;rank&quot;</span>:<span class="hljs-string">&quot;23&quot;</span>,<span class="hljs-string">&quot;fxLink&quot;</span>:<span class="hljs-string">&quot;https://www.qweather.com/weather/tongzhou-101010600.html&quot;</span>&#125;,&#123;<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;昌平&quot;</span>,<span class="hljs-string">&quot;id&quot;</span>:<span class="hljs-string">&quot;101010700&quot;</span>,<span class="hljs-string">&quot;lat&quot;</span>:<span class="hljs-string">&quot;40.21809&quot;</span>,<span class="hljs-string">&quot;lon&quot;</span>:<span class="hljs-string">&quot;116.23591&quot;</span>,<span class="hljs-string">&quot;adm2&quot;</span>:<span class="hljs-string">&quot;北京&quot;</span>,<span class="hljs-string">&quot;adm1&quot;</span>:<span class="hljs-string">&quot;北京市&quot;</span>,<span class="hljs-string">&quot;country&quot;</span>:<span class="hljs-string">&quot;中国&quot;</span>,<span class="hljs-string">&quot;tz&quot;</span>:<span class="hljs-string">&quot;Asia/Shanghai&quot;</span>,<span class="hljs-string">&quot;utcOffset&quot;</span>:<span class="hljs-string">&quot;+08:00&quot;</span>,<span class="hljs-string">&quot;isDst&quot;</span>:<span class="hljs-string">&quot;0&quot;</span>,<span class="hljs-string">&quot;type&quot;</span>:<span class="hljs-string">&quot;city&quot;</span>,<span class="hljs-string">&quot;rank&quot;</span>:<span class="hljs-string">&quot;23&quot;</span>,<span class="hljs-string">&quot;fxLink&quot;</span>:<span class="hljs-string">&quot;https://www.qweather.com/weather/changping-101010700.html&quot;</span>&#125;,&#123;<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;延庆&quot;</span>,<span class="hljs-string">&quot;id&quot;</span>:<span class="hljs-string">&quot;101010800&quot;</span>,<span class="hljs-string">&quot;lat&quot;</span>:<span class="hljs-string">&quot;40.46532&quot;</span>,<span class="hljs-string">&quot;lon&quot;</span>:<span class="hljs-string">&quot;115.98501&quot;</span>,<span class="hljs-string">&quot;adm2&quot;</span>:<span class="hljs-string">&quot;北京&quot;</span>,<span class="hljs-string">&quot;adm1&quot;</span>:<span class="hljs-string">&quot;北京市&quot;</span>,<span class="hljs-string">&quot;country&quot;</span>:<span class="hljs-string">&quot;中国&quot;</span>,<span class="hljs-string">&quot;tz&quot;</span>:<span class="hljs-string">&quot;Asia/Shanghai&quot;</span>,<span class="hljs-string">&quot;utcOffset&quot;</span>:<span class="hljs-string">&quot;+08:00&quot;</span>,<span class="hljs-string">&quot;isDst&quot;</span>:<span class="hljs-string">&quot;0&quot;</span>,<span class="hljs-string">&quot;type&quot;</span>:<span class="hljs-string">&quot;city&quot;</span>,<span class="hljs-string">&quot;rank&quot;</span>:<span class="hljs-string">&quot;33&quot;</span>,<span class="hljs-string">&quot;fxLink&quot;</span>:<span class="hljs-string">&quot;https://www.qweather.com/weather/yanqing-101010800.html&quot;</span>&#125;,&#123;<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;丰台&quot;</span>,<span class="hljs-string">&quot;id&quot;</span>:<span class="hljs-string">&quot;101010900&quot;</span>,<span class="hljs-string">&quot;lat&quot;</span>:<span class="hljs-string">&quot;39.86364&quot;</span>,<span class="hljs-string">&quot;lon&quot;</span>:<span class="hljs-string">&quot;116.28696&quot;</span>,<span class="hljs-string">&quot;adm2&quot;</span>:<span class="hljs-string">&quot;北京&quot;</span>,<span class="hljs-string">&quot;adm1&quot;</span>:<span class="hljs-string">&quot;北京市&quot;</span>,<span class="hljs-string">&quot;country&quot;</span>:<span class="hljs-string">&quot;中国&quot;</span>,<span class="hljs-string">&quot;tz&quot;</span>:<span class="hljs-string">&quot;Asia/Shanghai&quot;</span>,<span class="hljs-string">&quot;utcOffset&quot;</span>:<span class="hljs-string">&quot;+08:00&quot;</span>,<span class="hljs-string">&quot;isDst&quot;</span>:<span class="hljs-string">&quot;0&quot;</span>,<span class="hljs-string">&quot;type&quot;</span>:<span class="hljs-string">&quot;city&quot;</span>,<span class="hljs-string">&quot;rank&quot;</span>:<span class="hljs-string">&quot;25&quot;</span>,<span class="hljs-string">&quot;fxLink&quot;</span>:<span class="hljs-string">&quot;https://www.qweather.com/weather/fengtai-101010900.html&quot;</span>&#125;,&#123;<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;石景山&quot;</span>,<span class="hljs-string">&quot;id&quot;</span>:<span class="hljs-string">&quot;101011000&quot;</span>,<span class="hljs-string">&quot;lat&quot;</span>:<span class="hljs-string">&quot;39.91460&quot;</span>,<span class="hljs-string">&quot;lon&quot;</span>:<span class="hljs-string">&quot;116.19544&quot;</span>,<span class="hljs-string">&quot;adm2&quot;</span>:<span class="hljs-string">&quot;北京&quot;</span>,<span class="hljs-string">&quot;adm1&quot;</span>:<span class="hljs-string">&quot;北京市&quot;</span>,<span class="hljs-string">&quot;country&quot;</span>:<span class="hljs-string">&quot;中国&quot;</span>,<span class="hljs-string">&quot;tz&quot;</span>:<span class="hljs-string">&quot;Asia/Shanghai&quot;</span>,<span class="hljs-string">&quot;utcOffset&quot;</span>:<span class="hljs-string">&quot;+08:00&quot;</span>,<span class="hljs-string">&quot;isDst&quot;</span>:<span class="hljs-string">&quot;0&quot;</span>,<span class="hljs-string">&quot;type&quot;</span>:<span class="hljs-string">&quot;city&quot;</span>,<span class="hljs-string">&quot;rank&quot;</span>:<span class="hljs-string">&quot;35&quot;</span>,<span class="hljs-string">&quot;fxLink&quot;</span>:<span class="hljs-string">&quot;https://www.qweather.com/weather/shijingshan-101011000.html&quot;</span>&#125;],<span class="hljs-string">&quot;refer&quot;</span>:&#123;<span class="hljs-string">&quot;sources&quot;</span>:[<span class="hljs-string">&quot;QWeather&quot;</span>],<span class="hljs-string">&quot;license&quot;</span>:[<span class="hljs-string">&quot;QWeather Developers License&quot;</span>]&#125;&#125;<br>[--:--:--] [<span class="hljs-symbol">DEBUG</span>] --- <span class="hljs-symbol">JSON</span> 结束 ---<br><br>[<span class="hljs-symbol">INFO</span>] <span class="hljs-symbol">Geo</span> 数据获取成功<br><br>[<span class="hljs-symbol">DEBUG</span>] 原始 <span class="hljs-symbol">JSON</span>:<br>&#123;<span class="hljs-string">&quot;code&quot;</span>:<span class="hljs-string">&quot;200&quot;</span>,<span class="hljs-string">&quot;location&quot;</span>:[&#123;<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;北京&quot;</span>,<span class="hljs-string">&quot;id&quot;</span>:<span class="hljs-string">&quot;101010100&quot;</span>,<span class="hljs-string">&quot;lat&quot;</span>:<span class="hljs-string">&quot;39.90499&quot;</span>,<span class="hljs-string">&quot;lon&quot;</span>:<span class="hljs-string">&quot;116.40529&quot;</span>,<span class="hljs-string">&quot;adm2&quot;</span>:<span class="hljs-string">&quot;北京&quot;</span>,<span class="hljs-string">&quot;adm1&quot;</span>:<span class="hljs-string">&quot;北京市&quot;</span>,<span class="hljs-string">&quot;country&quot;</span>:<span class="hljs-string">&quot;中国&quot;</span>,<span class="hljs-string">&quot;tz&quot;</span>:<span class="hljs-string">&quot;Asia/Shanghai&quot;</span>,<span class="hljs-string">&quot;utcOffset&quot;</span>:<span class="hljs-string">&quot;+08:00&quot;</span>,<span class="hljs-string">&quot;isDst&quot;</span>:<span class="hljs-string">&quot;0&quot;</span>,<span class="hljs-string">&quot;type&quot;</span>:<span class="hljs-string">&quot;city&quot;</span>,<span class="hljs-string">&quot;rank&quot;</span>:<span class="hljs-string">&quot;10&quot;</span>,<span class="hljs-string">&quot;fxLink&quot;</span>:<span class="hljs-string">&quot;https://www.qweather.com/weather/beijing-101010100.html&quot;</span>&#125;,&#123;<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;海淀&quot;</span>,<span class="hljs-string">&quot;id&quot;</span>:<span class="hljs-string">&quot;101010200&quot;</span>,<span class="hljs-string">&quot;lat&quot;</span>:<span class="hljs-string">&quot;39.95607&quot;</span>,<span class="hljs-string">&quot;lon&quot;</span>:<span class="hljs-string">&quot;116.31032&quot;</span>,<span class="hljs-string">&quot;adm2&quot;</span>:<span class="hljs-string">&quot;北京&quot;</span>,<span class="hljs-string">&quot;adm1&quot;</span>:<span class="hljs-string">&quot;北京市&quot;</span>,<span class="hljs-string">&quot;country&quot;</span>:<span class="hljs-string">&quot;中国&quot;</span>,<span class="hljs-string">&quot;tz&quot;</span>:<span class="hljs-string">&quot;Asia/Shanghai&quot;</span>,<span class="hljs-string">&quot;utcOffset&quot;</span>:<span class="hljs-string">&quot;+08:00&quot;</span>,<span class="hljs-string">&quot;isDst&quot;</span>:<span class="hljs-string">&quot;0&quot;</span>,<span class="hljs-string">&quot;type&quot;</span>:<span class="hljs-string">&quot;city&quot;</span>,<span class="hljs-string">&quot;rank&quot;</span>:<span class="hljs-string">&quot;15&quot;</span>,<span class="hljs-string">&quot;fxLink&quot;</span>:<span class="hljs-string">&quot;https://www.qweather.com/weather/haidian-101010200.html&quot;</span>&#125;,&#123;<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;朝阳&quot;</span>,<span class="hljs-string">&quot;id&quot;</span>:<span class="hljs-string">&quot;101010300&quot;</span>,<span class="hljs-string">&quot;lat&quot;</span>:<span class="hljs-string">&quot;39.92149&quot;</span>,<span class="hljs-string">&quot;lon&quot;</span>:<span class="hljs-string">&quot;116.48641&quot;</span>,<span class="hljs-string">&quot;adm2&quot;</span>:<span class="hljs-string">&quot;北京&quot;</span>,<span class="hljs-string">&quot;adm1&quot;</span>:<span class="hljs-string">&quot;北京市&quot;</span>,<span class="hljs-string">&quot;country&quot;</span>:<span class="hljs-string">&quot;中国&quot;</span>,<span class="hljs-string">&quot;tz&quot;</span>:<span class="hljs-string">&quot;Asia/Shanghai&quot;</span>,<span class="hljs-string">&quot;utcOffset&quot;</span>:<span class="hljs-string">&quot;+08:00&quot;</span>,<span class="hljs-string">&quot;isDst&quot;</span>:<span class="hljs-string">&quot;0&quot;</span>,<span class="hljs-string">&quot;type&quot;</span>:<span class="hljs-string">&quot;city&quot;</span>,<span class="hljs-string">&quot;rank&quot;</span>:<span class="hljs-string">&quot;15&quot;</span>,<span class="hljs-string">&quot;fxLink&quot;</span>:<span class="hljs-string">&quot;https://www.qweather.com/weather/chaoyang-101010300.html&quot;</span>&#125;,&#123;<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;顺义&quot;</span>,<span class="hljs-string">&quot;id&quot;</span>:<span class="hljs-string">&quot;101010400&quot;</span>,<span class="hljs-string">&quot;lat&quot;</span>:<span class="hljs-string">&quot;40.12894&quot;</span>,<span class="hljs-string">&quot;lon&quot;</span>:<span class="hljs-string">&quot;116.65353&quot;</span>,<span class="hljs-string">&quot;adm2&quot;</span>:<span class="hljs-string">&quot;北京&quot;</span>,<span class="hljs-string">&quot;adm1&quot;</span>:<span class="hljs-string">&quot;北京市&quot;</span>,<span class="hljs-string">&quot;country&quot;</span>:<span class="hljs-string">&quot;中国&quot;</span>,<span class="hljs-string">&quot;tz&quot;</span>:<span class="hljs-string">&quot;Asia/Shanghai&quot;</span>,<span class="hljs-string">&quot;utcOffset&quot;</span>:<span class="hljs-string">&quot;+08:00&quot;</span>,<span class="hljs-string">&quot;isDst&quot;</span>:<span class="hljs-string">&quot;0&quot;</span>,<span class="hljs-string">&quot;type&quot;</span>:<span class="hljs-string">&quot;city&quot;</span>,<span class="hljs-string">&quot;rank&quot;</span>:<span class="hljs-string">&quot;33&quot;</span>,<span class="hljs-string">&quot;fxLink&quot;</span>:<span class="hljs-string">&quot;https://www.qweather.com/weather/shunyi-101010400.html&quot;</span>&#125;,&#123;<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;怀柔&quot;</span>,<span class="hljs-string">&quot;id&quot;</span>:<span class="hljs-string">&quot;101010500&quot;</span>,<span class="hljs-string">&quot;lat&quot;</span>:<span class="hljs-string">&quot;40.32427&quot;</span>,<span class="hljs-string">&quot;lon&quot;</span>:<span class="hljs-string">&quot;116.63712&quot;</span>,<span class="hljs-string">&quot;adm2&quot;</span>:<span class="hljs-string">&quot;北京&quot;</span>,<span class="hljs-string">&quot;adm1&quot;</span>:<span class="hljs-string">&quot;北京市&quot;</span>,<span class="hljs-string">&quot;country&quot;</span>:<span class="hljs-string">&quot;中国&quot;</span>,<span class="hljs-string">&quot;tz&quot;</span>:<span class="hljs-string">&quot;Asia/Shanghai&quot;</span>,<span class="hljs-string">&quot;utcOffset&quot;</span>:<span class="hljs-string">&quot;+08:00&quot;</span>,<span class="hljs-string">&quot;isDst&quot;</span>:<span class="hljs-string">&quot;0&quot;</span>,<span class="hljs-string">&quot;type&quot;</span>:<span class="hljs-string">&quot;city&quot;</span>,<span class="hljs-string">&quot;rank&quot;</span>:<span class="hljs-string">&quot;33&quot;</span>,<span class="hljs-string">&quot;fxLink&quot;</span>:<span class="hljs-string">&quot;https://www.qweather.com/weather/huairou-101010500.html&quot;</span>&#125;,&#123;<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;通州&quot;</span>,<span class="hljs-string">&quot;id&quot;</span>:<span class="hljs-string">&quot;101010600&quot;</span>,<span class="hljs-string">&quot;lat&quot;</span>:<span class="hljs-string">&quot;39.90249&quot;</span>,<span class="hljs-string">&quot;lon&quot;</span>:<span class="hljs-string">&quot;116.65860&quot;</span>,<span class="hljs-string">&quot;adm2&quot;</span>:<span class="hljs-string">&quot;北京&quot;</span>,<span class="hljs-string">&quot;adm1&quot;</span>:<span class="hljs-string">&quot;北京市&quot;</span>,<span class="hljs-string">&quot;country&quot;</span>:<span class="hljs-string">&quot;中国&quot;</span>,<span class="hljs-string">&quot;tz&quot;</span>:<span class="hljs-string">&quot;Asia/Shanghai&quot;</span>,<span class="hljs-string">&quot;utcOffset&quot;</span>:<span class="hljs-string">&quot;+08:00&quot;</span>,<span class="hljs-string">&quot;isDst&quot;</span>:<span class="hljs-string">&quot;0&quot;</span>,<span class="hljs-string">&quot;type&quot;</span>:<span class="hljs-string">&quot;city&quot;</span>,<span class="hljs-string">&quot;rank&quot;</span>:<span class="hljs-string">&quot;23&quot;</span>,<span class="hljs-string">&quot;fxLink&quot;</span>:<span class="hljs-string">&quot;https://www.qweather.com/weather/tongzhou-101010600.html&quot;</span>&#125;,&#123;<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;昌平&quot;</span>,<span class="hljs-string">&quot;id&quot;</span>:<span class="hljs-string">&quot;101010700&quot;</span>,<span class="hljs-string">&quot;lat&quot;</span>:<span class="hljs-string">&quot;40.21809&quot;</span>,<span class="hljs-string">&quot;lon&quot;</span>:<span class="hljs-string">&quot;116.23591&quot;</span>,<span class="hljs-string">&quot;adm2&quot;</span>:<span class="hljs-string">&quot;北京&quot;</span>,<span class="hljs-string">&quot;adm1&quot;</span>:<span class="hljs-string">&quot;北京市&quot;</span>,<span class="hljs-string">&quot;country&quot;</span>:<span class="hljs-string">&quot;中国&quot;</span>,<span class="hljs-string">&quot;tz&quot;</span>:<span class="hljs-string">&quot;Asia/Shanghai&quot;</span>,<span class="hljs-string">&quot;utcOffset&quot;</span>:<span class="hljs-string">&quot;+08:00&quot;</span>,<span class="hljs-string">&quot;isDst&quot;</span>:<span class="hljs-string">&quot;0&quot;</span>,<span class="hljs-string">&quot;type&quot;</span>:<span class="hljs-string">&quot;city&quot;</span>,<span class="hljs-string">&quot;rank&quot;</span>:<span class="hljs-string">&quot;23&quot;</span>,<span class="hljs-string">&quot;fxLink&quot;</span>:<span class="hljs-string">&quot;https://www.qweather.com/weather/changping-101010700.html&quot;</span>&#125;,&#123;<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;延庆&quot;</span>,<span class="hljs-string">&quot;id&quot;</span>:<span class="hljs-string">&quot;101010800&quot;</span>,<span class="hljs-string">&quot;lat&quot;</span>:<span class="hljs-string">&quot;40.46532&quot;</span>,<span class="hljs-string">&quot;lon&quot;</span>:<span class="hljs-string">&quot;115.98501&quot;</span>,<span class="hljs-string">&quot;adm2&quot;</span>:<span class="hljs-string">&quot;北京&quot;</span>,<span class="hljs-string">&quot;adm1&quot;</span>:<span class="hljs-string">&quot;北京市&quot;</span>,<span class="hljs-string">&quot;country&quot;</span>:<span class="hljs-string">&quot;中国&quot;</span>,<span class="hljs-string">&quot;tz&quot;</span>:<span class="hljs-string">&quot;Asia/Shanghai&quot;</span>,<span class="hljs-string">&quot;utcOffset&quot;</span>:<span class="hljs-string">&quot;+08:00&quot;</span>,<span class="hljs-string">&quot;isDst&quot;</span>:<span class="hljs-string">&quot;0&quot;</span>,<span class="hljs-string">&quot;type&quot;</span>:<span class="hljs-string">&quot;city&quot;</span>,<span class="hljs-string">&quot;rank&quot;</span>:<span class="hljs-string">&quot;33&quot;</span>,<span class="hljs-string">&quot;fxLink&quot;</span>:<span class="hljs-string">&quot;https://www.qweather.com/weather/yanqing-101010800.html&quot;</span>&#125;,&#123;<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;丰台&quot;</span>,<span class="hljs-string">&quot;id&quot;</span>:<span class="hljs-string">&quot;101010900&quot;</span>,<span class="hljs-string">&quot;lat&quot;</span>:<span class="hljs-string">&quot;39.86364&quot;</span>,<span class="hljs-string">&quot;lon&quot;</span>:<span class="hljs-string">&quot;116.28696&quot;</span>,<span class="hljs-string">&quot;adm2&quot;</span>:<span class="hljs-string">&quot;北京&quot;</span>,<span class="hljs-string">&quot;adm1&quot;</span>:<span class="hljs-string">&quot;北京市&quot;</span>,<span class="hljs-string">&quot;country&quot;</span>:<span class="hljs-string">&quot;中国&quot;</span>,<span class="hljs-string">&quot;tz&quot;</span>:<span class="hljs-string">&quot;Asia/Shanghai&quot;</span>,<span class="hljs-string">&quot;utcOffset&quot;</span>:<span class="hljs-string">&quot;+08:00&quot;</span>,<span class="hljs-string">&quot;isDst&quot;</span>:<span class="hljs-string">&quot;0&quot;</span>,<span class="hljs-string">&quot;type&quot;</span>:<span class="hljs-string">&quot;city&quot;</span>,<span class="hljs-string">&quot;rank&quot;</span>:<span class="hljs-string">&quot;25&quot;</span>,<span class="hljs-string">&quot;fxLink&quot;</span>:<span class="hljs-string">&quot;https://www.qweather.com/weather/fengtai-101010900.html&quot;</span>&#125;,&#123;<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;石景山&quot;</span>,<span class="hljs-string">&quot;id&quot;</span>:<span class="hljs-string">&quot;101011000&quot;</span>,<span class="hljs-string">&quot;lat&quot;</span>:<span class="hljs-string">&quot;39.91460&quot;</span>,<span class="hljs-string">&quot;lon&quot;</span>:<span class="hljs-string">&quot;116.19544&quot;</span>,<span class="hljs-string">&quot;adm2&quot;</span>:<span class="hljs-string">&quot;北京&quot;</span>,<span class="hljs-string">&quot;adm1&quot;</span>:<span class="hljs-string">&quot;北京市&quot;</span>,<span class="hljs-string">&quot;country&quot;</span>:<span class="hljs-string">&quot;中国&quot;</span>,<span class="hljs-string">&quot;tz&quot;</span>:<span class="hljs-string">&quot;Asia/Shanghai&quot;</span>,<span class="hljs-string">&quot;utcOffset&quot;</span>:<span class="hljs-string">&quot;+08:00&quot;</span>,<span class="hljs-string">&quot;isDst&quot;</span>:<span class="hljs-string">&quot;0&quot;</span>,<span class="hljs-string">&quot;type&quot;</span>:<span class="hljs-string">&quot;city&quot;</span>,<span class="hljs-string">&quot;rank&quot;</span>:<span class="hljs-string">&quot;35&quot;</span>,<span class="hljs-string">&quot;fxLink&quot;</span>:<span class="hljs-string">&quot;https://www.qweather.com/weather/shijingshan-101011000.html&quot;</span>&#125;],<span class="hljs-string">&quot;refer&quot;</span>:&#123;<span class="hljs-string">&quot;sources&quot;</span>:[<span class="hljs-string">&quot;QWeather&quot;</span>],<span class="hljs-string">&quot;license&quot;</span>:[<span class="hljs-string">&quot;QWeather Developers License&quot;</span>]&#125;&#125;<br><br>[<span class="hljs-symbol">DEBUG</span>] --- 结束 ---<br><br>[<span class="hljs-symbol">INFO</span>] 城市: 北京<br>[<span class="hljs-symbol">INFO</span>] 经纬度: <span class="hljs-number">39.90499</span>, <span class="hljs-number">116.40529</span><br>[<span class="hljs-symbol">OK</span>] 解析成功<br><br>[<span class="hljs-symbol">INFO</span>] 测试完成<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/IoT/" class="category-chain-item">IoT</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/ESP32/" class="print-no-link">#ESP32</a>
+      
+        <a href="/tags/Arduino/" class="print-no-link">#Arduino</a>
+      
+        <a href="/tags/GZIP/" class="print-no-link">#GZIP</a>
+      
+        <a href="/tags/%E5%92%8C%E9%A3%8E%E5%A4%A9%E6%B0%94/" class="print-no-link">#和风天气</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/08/13/hello-world/" title="Hello World">
+                        <span class="hidden-mobile">Hello World</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br> <p>🄯 Copyleft by Bilibili ZA1D_3MK</p> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    function isExpandAllEnabled() {
+      return CONFIG.toc && CONFIG.toc.expand_all === true;
+    }
+    function expandAllToc() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
+    }
+    function updateTocToggle($li, $childList) {
+      var $toggle = $li.children('.toc-toggle');
+      if ($toggle.length === 0) { return; }
+      var collapsed = $childList.hasClass('tocbot-is-collapsed');
+      $toggle
+        .toggleClass('toc-toggle-collapsed', collapsed)
+        .toggleClass('toc-toggle-expanded', !collapsed);
+    }
+    function bindTocToggle() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .toc-list-item').each(function() {
+        var $li = jQuery(this);
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) {
+          if ($li.children('.toc-toggle').length === 0) {
+            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
+          }
+          return;
+        }
+
+        if ($li.children('.toc-toggle').length === 0) {
+          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
+        }
+        updateTocToggle($li, $childList);
+      });
+      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = jQuery(this).parent('.toc-list-item');
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) { return; }
+        $childList.toggleClass('tocbot-is-collapsed');
+        updateTocToggle($li, $childList);
+      });
+      if (!window.__tocToggleObserver) {
+        window.__tocToggleObserver = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
+            var $list = jQuery(mutation.target);
+            var $li = $list.parent('.toc-list-item');
+            if ($li.length === 0) { return; }
+            updateTocToggle($li, $list);
+          });
+        });
+        jQuery('#toc-body ol').each(function() {
+          window.__tocToggleObserver.observe(this, { attributes: true });
+        });
+      }
+    }
+    var tocConfig = Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc);
+    if (isExpandAllEnabled()) {
+      tocConfig.collapseDepth = 6;
+    }
+    window.tocbot.init(tocConfig);
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+    expandAllToc();
+    bindTocToggle();
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+        expandAllToc();
+        bindTocToggle();
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
