@@ -27,7 +27,7 @@
 <meta property="og:description" content="观前提示：我只是一个 ESP32 萌新，这些代码是我和 DeepSeek 一起写出来的，所以代码烂是正常的。另外，我用的是 PlatformIO，所以本教程对于 Arduino IDE 有些方法可能不适用。               注：此章会使用上一章节的完整demo。如果没看，点我跳转，找到下方「完整demo」章节，但最好看完               完整源码在">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-08-14T02:41:15.000Z">
-<meta property="article:modified_time" content="2026-08-14T08:02:49.728Z">
+<meta property="article:modified_time" content="2026-08-14T09:11:55.627Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="Arduino">
 <meta property="article:tag" content="ESP32">
@@ -388,10 +388,30 @@
 <h3 id="Linux用户"><a href="#Linux用户" class="headerlink" title="Linux用户"></a>Linux用户</h3><p>首先，对于Linux用户，运行以下命令：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span><br>git <span class="hljs-built_in">clone</span> https://github.com/rweather/arduinolibs.git<br><span class="hljs-built_in">cd</span> arduinolibs/libraries/Crypto<br><span class="hljs-built_in">cp</span> -r ./*.cpp ./*.h ./utility [你的项目src目录]/lib<br></code></pre></td></tr></table></figure>
 <p>对于<code>command not found: git</code>，运行以下命令：</p>
+<table>
+<thead>
+<tr>
+<th align="left">发行版</th>
+<th align="left">安装命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Debian&#x2F;Ubuntu</td>
+<td align="left"><code>sudo apt install git</code></td>
+</tr>
+<tr>
+<td align="left">Fedora&#x2F;RHEL</td>
+<td align="left"><code>sudo dnf install git</code></td>
+</tr>
+<tr>
+<td align="left">Arch系</td>
+<td align="left"><code>sudo pacman -S git</code></td>
+</tr>
+</tbody></table>
+<p><em><del>NixOS和FreeBSD的朋友，既然你们都知道怎么用这个系统了，git应该会装吧？</del></em></p>
 <div class="note note-info">
-            <p><strong>注意：以下命令三选一，根据你的 Linux 发行版选择对应的那一条执行，不要全部复制粘贴。</strong><br>如果不知道自己的发行版是什么，在终端运行 <strong><code>cat /etc/os-release | grep &quot;^ID&quot;</code></strong> 查看自己的发行版。</p> 
+            <p>如果不知道自己的发行版是什么，在终端运行 <strong><code>cat /etc/os-release | grep &quot;^ID&quot;</code></strong> 查看自己的发行版。</p> 
           </div>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#Arch系用户</span><br><span class="hljs-built_in">sudo</span> pacman -S git<br><br><span class="hljs-comment"># Debian/Ubuntu 以及其他 Debian系用户</span><br><span class="hljs-built_in">sudo</span> apt install git<br><br><span class="hljs-comment"># Fedora/RHEL</span><br><span class="hljs-built_in">sudo</span> dnf install git<br></code></pre></td></tr></table></figure>
 
 <h3 id="Windows-用户"><a href="#Windows-用户" class="headerlink" title="Windows 用户"></a>Windows 用户</h3><h4 id="使用命令行配置"><a href="#使用命令行配置" class="headerlink" title="使用命令行配置"></a>使用命令行配置</h4><p>如果安装了git，请打开开始菜单，找到 Git Bash 并运行<br>在 Git Bash 里依次执行以下命令：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span><br>git <span class="hljs-built_in">clone</span> https://github.com/rweather/arduinolibs.git<br><span class="hljs-built_in">cd</span> arduinolibs/libraries/Crypto<br><span class="hljs-built_in">cp</span> -r ./*.cpp ./*.h ./utility [你的项目src目录]/lib<br></code></pre></td></tr></table></figure>
@@ -404,7 +424,7 @@
 </li>
 <li><p>点击绿色的 Code 按钮 → Download ZIP；</p>
 </li>
-<li><p>解压后，进入 arduinolibs-main&#x2F;libraries&#x2F;Crypto 文件夹；</p>
+<li><p>解压后，进入 arduinolibs-master&#x2F;libraries&#x2F;Crypto 文件夹；</p>
 </li>
 <li><p>把里面所有 .cpp、.h 文件以及 utility 文件夹，全部复制粘贴到你的项目 src 文件夹中的 lib 文件夹里，即可安装。</p>
 </li>
