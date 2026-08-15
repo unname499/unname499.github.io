@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>自我介绍</title>
+    <link href="/2026/08/15/introduce-myself/"/>
+    <url>/2026/08/15/introduce-myself/</url>
+    
+    <content type="html"><![CDATA[<h2 id="欢迎！"><a href="#欢迎！" class="headerlink" title="欢迎！"></a>欢迎！</h2><p>你好，这里是 Unname 的个人博客。</p><p>其实我也不知道该写什么，好像没什么可介绍的。<br>我目前初一（2026 年 8 月），开学就初二了，学习压力会大一些，更新的时间可能会越来越少。没办法，该来的总会来。</p><hr><p>写博客的原因很简单——希望能分享一些自己做过的、踩过坑的东西，比如前面那两篇 ESP32 教程。<br>其实我之前也试过一次写博客，完全是自己从0写出来的，但没什么人看，动力也就慢慢没了。感兴趣的话可以去看看那个废弃的仓库：<a href="https://github.com/unname499/unname499.github.io_feiqile">https://github.com/unname499/unname499.github.io_feiqile</a></p><p>现在用的是 Hexo + Fluid 主题，正好也推荐给想搭博客的朋友：<a href="https://github.com/fluid-dev/hexo-theme-fluid">https://github.com/fluid-dev/hexo-theme-fluid</a></p><hr><p>就这样吧，感谢你点进来。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>其他</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>生活记录</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>如何在ESP32 Arduino框架下生成适合和风天气的JWT</title>
     <link href="/2026/08/14/ESP32-ARDUINO-JWT/"/>
     <url>/2026/08/14/ESP32-ARDUINO-JWT/</url>

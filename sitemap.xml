@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://unname-bj7.pages.dev/2026/08/15/introduce-myself/</loc>
+    
+    <lastmod>2026-08-15</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://unname-bj7.pages.dev/googleae50c828232acd9c.html</loc>
     
     <lastmod>2026-08-15</lastmod>
@@ -81,10 +90,24 @@
     <priority>0.2</priority>
   </url>
   
+  <url>
+    <loc>https://unname-bj7.pages.dev/tags/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
 
   
   <url>
     <loc>https://unname-bj7.pages.dev/categories/IoT/</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://unname-bj7.pages.dev/categories/%E5%85%B6%E4%BB%96/</loc>
     <lastmod>2026-08-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
