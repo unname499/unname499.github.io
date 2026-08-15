@@ -1,0 +1,11 @@
+http://example.com/googleae50c828232acd9c.html
+http://example.com/2026/08/14/ESP32-ARDUINO-JWT/
+http://example.com/2026/08/13/ESP32_ARDUINO_GZIP/
+http://example.com/2026/08/13/hello-world/
+http://example.com/
+http://example.com/tags/ESP32/
+http://example.com/tags/Arduino/
+http://example.com/tags/JWT/
+http://example.com/tags/%E5%92%8C%E9%A3%8E%E5%A4%A9%E6%B0%94/
+http://example.com/tags/GZIP/
+http://example.com/categories/IoT/
