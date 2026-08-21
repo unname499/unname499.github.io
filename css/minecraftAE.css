@@ -1,0 +1,6 @@
+@font-face {
+    font-family: 'MinecraftAE'; /* 给你的字体起个名字，后续会用到 */
+    src: url('/fonts/MinecraftAE.ttf') format('truetype'); /* 路径要对应你放置 .ttf 文件的位置 */
+    font-weight: normal; /* 根据需要设置字重 */
+    font-style: normal;  /* 根据需要设置样式 */
+}
