@@ -74,13 +74,6 @@
 
   
   <url>
-    <loc>https://unname-bj7.pages.dev/tags/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/</loc>
-    <lastmod>2026-08-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://unname-bj7.pages.dev/tags/ESP32/</loc>
     <lastmod>2026-08-23</lastmod>
     <changefreq>weekly</changefreq>
@@ -95,7 +88,7 @@
   </url>
   
   <url>
-    <loc>https://unname-bj7.pages.dev/tags/GZIP/</loc>
+    <loc>https://unname-bj7.pages.dev/tags/JWT/</loc>
     <lastmod>2026-08-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -109,7 +102,14 @@
   </url>
   
   <url>
-    <loc>https://unname-bj7.pages.dev/tags/JWT/</loc>
+    <loc>https://unname-bj7.pages.dev/tags/GZIP/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://unname-bj7.pages.dev/tags/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/</loc>
     <lastmod>2026-08-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -118,14 +118,14 @@
 
   
   <url>
-    <loc>https://unname-bj7.pages.dev/categories/%E5%85%B6%E4%BB%96/</loc>
+    <loc>https://unname-bj7.pages.dev/categories/IoT/</loc>
     <lastmod>2026-08-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://unname-bj7.pages.dev/categories/IoT/</loc>
+    <loc>https://unname-bj7.pages.dev/categories/%E5%85%B6%E4%BB%96/</loc>
     <lastmod>2026-08-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
