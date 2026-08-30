@@ -2,7 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://unname-bj7.pages.dev/remark/index.html</loc>
+    <loc>https://unname-bj7.pages.dev/remark/introduce-myself.html</loc>
+    
+    <lastmod>2026-08-30</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://unname-bj7.pages.dev/remark/remark.html</loc>
     
     <lastmod>2026-08-23</lastmod>
     
@@ -23,15 +32,6 @@
     <loc>https://unname-bj7.pages.dev/2026/08/14/ESP32-ARDUINO-JWT/</loc>
     
     <lastmod>2026-08-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://unname-bj7.pages.dev/2026/08/15/introduce-myself/</loc>
-    
-    <lastmod>2026-08-15</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -67,7 +67,7 @@
 
   <url>
     <loc>https://unname-bj7.pages.dev/</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -75,42 +75,35 @@
   
   <url>
     <loc>https://unname-bj7.pages.dev/tags/ESP32/</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://unname-bj7.pages.dev/tags/Arduino/</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://unname-bj7.pages.dev/tags/JWT/</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://unname-bj7.pages.dev/tags/%E5%92%8C%E9%A3%8E%E5%A4%A9%E6%B0%94/</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://unname-bj7.pages.dev/tags/GZIP/</loc>
-    <lastmod>2026-08-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://unname-bj7.pages.dev/tags/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -119,14 +112,7 @@
   
   <url>
     <loc>https://unname-bj7.pages.dev/categories/IoT/</loc>
-    <lastmod>2026-08-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://unname-bj7.pages.dev/categories/%E5%85%B6%E4%BB%96/</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>

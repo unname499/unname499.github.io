@@ -1,7 +1,7 @@
-https://unname-bj7.pages.dev/remark/index.html
+https://unname-bj7.pages.dev/remark/introduce-myself.html
+https://unname-bj7.pages.dev/remark/remark.html
 https://unname-bj7.pages.dev/2026/08/23/ESP32-QWEATHER-LIB/
 https://unname-bj7.pages.dev/2026/08/14/ESP32-ARDUINO-JWT/
-https://unname-bj7.pages.dev/2026/08/15/introduce-myself/
 https://unname-bj7.pages.dev/googleae50c828232acd9c.html
 https://unname-bj7.pages.dev/2026/08/13/ESP32_ARDUINO_GZIP/
 https://unname-bj7.pages.dev/2026/08/13/hello-world/
@@ -11,6 +11,4 @@ https://unname-bj7.pages.dev/tags/Arduino/
 https://unname-bj7.pages.dev/tags/JWT/
 https://unname-bj7.pages.dev/tags/%E5%92%8C%E9%A3%8E%E5%A4%A9%E6%B0%94/
 https://unname-bj7.pages.dev/tags/GZIP/
-https://unname-bj7.pages.dev/tags/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/
 https://unname-bj7.pages.dev/categories/IoT/
-https://unname-bj7.pages.dev/categories/%E5%85%B6%E4%BB%96/
