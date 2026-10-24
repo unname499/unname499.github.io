@@ -417,6 +417,39 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2026/10/04/hello-world/" target="_self">
+          Hello World
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2026/10/04/hello-world/" target="_self">
+        <div>
+          Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-10-04 14:23" pubdate>
+              2026-10-04
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2026/08/23/ESP32-QWEATHER-LIB/" target="_self">
           自制ESP32 Arduino框架下和风天气数据获取的库
         </a>
@@ -639,39 +672,6 @@
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2026/08/13/hello-world/" target="_self">
-          Hello World
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2026/08/13/hello-world/" target="_self">
-        <div>
-          Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2026-08-13 12:06" pubdate>
-              2026-08-13
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
 
 
 
@@ -761,13 +761,13 @@
       
         jQuery.ajax({
           type: 'GET',
-          url: 'https://api.guiguiya.com/api/dailyenglish?type=sj',
+          url: 'https://api.timelessq.com/english-sentence',
           headers: {},
           dataType: 'json',
           success: function(result) {
             var apiText;
             if (result) {
-              var keys = 'data,zh'.split(',');
+              var keys = 'data,content'.split(',');
               if (result instanceof Array) {
                 result = result[0];
               }
@@ -785,7 +785,7 @@
           },
           error: function(xhr, status, error) {
             if (error) {
-              console.error('Failed to request https://api.guiguiya.com/api/dailyenglish?type=sj:', error);
+              console.error('Failed to request https://api.timelessq.com/english-sentence:', error);
             }
             typing(text);
           }
