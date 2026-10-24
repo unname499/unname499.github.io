@@ -64,15 +64,6 @@
     <priority>0.6</priority>
   </url>
   
-  <url>
-    <loc>https://unname-bj7.pages.dev/2026/10/04/hello-world/</loc>
-    
-    <lastmod>2026-08-13</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
 
   <url>
     <loc>https://unname-bj7.pages.dev/</loc>
@@ -111,14 +102,14 @@
   </url>
   
   <url>
-    <loc>https://unname-bj7.pages.dev/tags/GZIP/</loc>
+    <loc>https://unname-bj7.pages.dev/tags/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/</loc>
     <lastmod>2026-10-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://unname-bj7.pages.dev/tags/%E7%94%9F%E6%B4%BB%E8%AE%B0%E5%BD%95/</loc>
+    <loc>https://unname-bj7.pages.dev/tags/GZIP/</loc>
     <lastmod>2026-10-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
