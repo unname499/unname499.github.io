@@ -761,7 +761,7 @@
       
         jQuery.ajax({
           type: 'GET',
-          url: 'https://api.timelessq.com/english-sentence',
+          url: 'https://api.timelessq.com/english-sentence/random',
           headers: {},
           dataType: 'json',
           success: function(result) {
@@ -785,7 +785,7 @@
           },
           error: function(xhr, status, error) {
             if (error) {
-              console.error('Failed to request https://api.timelessq.com/english-sentence:', error);
+              console.error('Failed to request https://api.timelessq.com/english-sentence/random:', error);
             }
             typing(text);
           }
